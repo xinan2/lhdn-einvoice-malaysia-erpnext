@@ -262,6 +262,7 @@ def compliance_api_call(encoded_hash,signed_xmlfile_name,invoice_number,invoice_
                                 sale_doc.db_set("custom_uuid", uuid)        
                         
                             frappe.msgprint(f"API Status: {response_status}<br>Response: {response_text}")
+                            
                             # # Create a custom dialog
                             # dialog = frappe.ui.Dialog({
                             #     'title': 'API Response',
