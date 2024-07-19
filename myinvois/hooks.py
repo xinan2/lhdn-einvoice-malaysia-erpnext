@@ -29,6 +29,11 @@ app_license = "mit"
 
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {
+    "Sales Invoice" : "public/js/myinvois_sales_invoice.js",
+    "Lhdn Authorizations":  "public/js/myinvois_lhdn_authorizations.js"
+    }
+
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -127,6 +132,13 @@ app_license = "mit"
 # 		"on_update": "method",
 # 		"on_cancel": "method",
 # 		"on_trash": "method"
+# 	}
+# }
+
+# doc_events = {
+# 	"Payment Entry": {
+# 		"on_submit": "myinvois.utils.payment_entry.on_submit",
+		
 # 	}
 # }
 

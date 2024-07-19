@@ -1,0 +1,81 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-07-17 14:50:40.139825",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "details_section",
+  "lhdn_invoice_enabled",
+  "urls__api_endpoints_section",
+  "select",
+  "invoice_version",
+  "sandbox_url",
+  "production_url"
+ ],
+ "fields": [
+  {
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "default": "0",
+   "fieldname": "lhdn_invoice_enabled",
+   "fieldtype": "Check",
+   "label": "Lhdn Invoice Enabled"
+  },
+  {
+   "fieldname": "urls__api_endpoints_section",
+   "fieldtype": "Section Break",
+   "label": "URLs / API EndPoints "
+  },
+  {
+   "fieldname": "select",
+   "fieldtype": "Select",
+   "label": "Select",
+   "options": "Sandbox\nProduction"
+  },
+  {
+   "description": "add url with https",
+   "fieldname": "sandbox_url",
+   "fieldtype": "Data",
+   "label": "Sandbox Url"
+  },
+  {
+   "fieldname": "production_url",
+   "fieldtype": "Data",
+   "label": "Production Url"
+  },
+  {
+   "description": "signature validation is disabled on this version 1.0",
+   "fieldname": "invoice_version",
+   "fieldtype": "Select",
+   "label": "Invoice Version",
+   "options": "v1.0\nv1.1"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-07-17 19:52:42.180670",
+ "modified_by": "Administrator",
+ "module": "myinvois",
+ "name": "Lhdn Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
