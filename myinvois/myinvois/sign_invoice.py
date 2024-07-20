@@ -190,10 +190,55 @@ def get_access_token(company_name):
         frappe.throw("Failed to fetch access token")
 
 
-def compliance_api_call(encoded_hash,signed_xmlfile_name,invoice_number,invoice_version):
+
+def get_invoice_version():
+    settings =  frappe.get_doc('Lhdn Settings')
+    invoice_version = settings.invoice_version
+    return invoice_version
+
+
+@frappe.whitelist()     
+def refresh_doc_status(uuid,invoice_number):
+    try:
+        print("enter in refersh")
+        sale_doc = frappe.get_doc("Sales Invoice", invoice_number)
+
+        #calling token method
+        token = get_access_token(sale_doc.company)
+
+        headers = {
+                    'accept': 'application/json',
+                    'Accept-Language': 'en',
+                    'X-Rate-Limit-Limit': '1000',
+                    # 'Accept-Version': 'V2',
+                    'Authorization': f"Bearer {token}",
+                    'Content-Type': 'application/json'
+                }
+        invoice_version = get_invoice_version()
+        #https://{{apiBaseUrl}}/api/v1.0/documents/51W5N1C6SCZ9AHBK39YQF03J10/details
+        api_url = get_API_url(base_url=f"/api/{invoice_version}/documents/{uuid}/details")
+        status_response = requests.get(api_url, headers=headers)
+
+      
+        print("doc status",status_response)
+        status_data = status_response.json()
+        doc_status = status_data.get("status")
+
+        sale_doc.db_set("custom_lhdn_status", doc_status)  
+
+        
+            
+            
+    except Exception as e:
+                    frappe.throw("ERROR in clearance invoice ,lhdn validation:  " + str(e) )
+
+
+def compliance_api_call(encoded_hash,signed_xmlfile_name,invoice_number):
                 try:
 
+                    invoice_version = get_invoice_version()
                     print("compliance method",invoice_version)
+
 
                     sale_doc = frappe.get_doc("Sales Invoice", invoice_number)
                    
@@ -240,13 +285,13 @@ def compliance_api_call(encoded_hash,signed_xmlfile_name,invoice_number,invoice_
                         response = requests.post(api_url, headers=headers, data=payload_json)
 
                         response_text = response.text
-                        response_status = response.status_code
+                        response_status_code= response.status_code
 
                         # frappe.msgprint(f"API Status: {response_status}\nResponse: {response_text}")
                         # frappe.msgprint(f"API Status: {response_status}\nResponse:\n{response_text}")
 
                         
-                        if response_status == 202:
+                        if response_status_code == 202:
                             # Parse the JSON response
                             response_data = json.loads(response_text)
                             
@@ -259,10 +304,20 @@ def compliance_api_call(encoded_hash,signed_xmlfile_name,invoice_number,invoice_
                                 
                                 # Update the Sales Invoice document with submissionUid and uuid
                                 sale_doc.db_set("custom_submissionuid", submission_uid)  
-                                sale_doc.db_set("custom_uuid", uuid)        
-                        
-                            frappe.msgprint(f"API Status: {response_status}<br>Response: {response_text}")
-                            
+                                sale_doc.db_set("custom_uuid", uuid) 
+
+                                #https://{{apiBaseUrl}}/api/v1.0/documents/51W5N1C6SCZ9AHBK39YQF03J10/details
+                                api_url = get_API_url(base_url=f"/api/{invoice_version}/documents/{uuid}/details")
+
+                                
+
+                                status_response = requests.get(api_url, headers=headers)
+                                print("doc status",status_response)
+                                status_data = status_response.json()
+                                doc_status = status_data.get("status")
+                               
+                            frappe.msgprint(f"API Status Code: {response_status_code}<br>Document Status: {doc_status}<br>Response: {response_text}")
+
                             # # Create a custom dialog
                             # dialog = frappe.ui.Dialog({
                             #     'title': 'API Response',
@@ -363,7 +418,7 @@ def lhdn_Background(invoice_number):
                         # if sales_invoice_doc.custom_zatca_status == "REPORTED" or sales_invoice_doc.custom_zatca_status == "CLEARED":
                         #     frappe.throw("Already submitted to Zakat and Tax Authority")
                         
-                        myinvois_Call(invoice_number,invoice_version,1)
+                        myinvois_Call(invoice_number,1)
                         
                     except Exception as e:
                         frappe.throw("Error in background call:  " + str(e) )
@@ -373,10 +428,9 @@ def lhdn_Background(invoice_number):
 #compliance_type is invoice_type
  
 @frappe.whitelist(allow_guest=True)
-def myinvois_Call(invoice_number,invoice_version, compliance_type):
+def myinvois_Call(invoice_number, compliance_type):
     try:
         print("enter in myinvoice call method")
-        print("myinovi",invoice_version)
 
         compliance_type = 1
         # any_item_has_tax_template = False
@@ -495,7 +549,7 @@ def myinvois_Call(invoice_number,invoice_version, compliance_type):
         # print("hash1",hash_hex)
         # compliance_api_call(encoded_hash, signed_xmlfile_name)
         
-        compliance_api_call(hash_hex, base64_encoded_xml,invoice_number,invoice_version)
+        compliance_api_call(hash_hex, base64_encoded_xml,invoice_number)
 
 
 
