@@ -40,6 +40,7 @@ import frappe
 import requests
 from frappe.utils.data import  get_time
 from datetime import datetime, timedelta
+from urllib.parse import urlparse, urlunparse
 
 
 
@@ -140,6 +141,7 @@ def xml_base64_Decode(signed_xmlfile_name):
                         frappe.msgprint("Error in xml base64:  " + str(e) )
 
 
+
 @frappe.whitelist()
 def get_access_token(company_name):
     # Fetch the credentials from the custom doctype
@@ -202,9 +204,11 @@ def refresh_doc_status(uuid,invoice_number):
     try:
         print("enter in refersh")
         sale_doc = frappe.get_doc("Sales Invoice", invoice_number)
+        company_name = sale_doc.company
+        long_id = sale_doc.custom_long_id
 
         #calling token method
-        token = get_access_token(sale_doc.company)
+        token = get_access_token(company_name)
 
         headers = {
                     'accept': 'application/json',
@@ -224,73 +228,102 @@ def refresh_doc_status(uuid,invoice_number):
         status_data = status_response.json()
         doc_status = status_data.get("status")
 
-        sale_doc.db_set("custom_lhdn_status", doc_status)  
+        sale_doc.db_set("custom_lhdn_status", doc_status)
 
-        
+        if doc_status == "Valid":
+            
+            if uuid and long_id:
+                qr_code_url = make_qr_code_url(uuid,long_id)
+                #remove -api
+                url = remove_api_from_url(qr_code_url)
+                
+                sale_doc.db_set("custom_qr_code_link",url)
+                frappe.msgprint("Qr Code Updated")
+
+
+
+
             
             
     except Exception as e:
                     frappe.throw("ERROR in clearance invoice ,lhdn validation:  " + str(e) )
 
-
+def remove_api_from_url(url):
+    parsed_url = urlparse(url)
+    new_netloc = parsed_url.netloc.replace('-api', '')
+    new_url = urlunparse(parsed_url._replace(netloc=new_netloc))
+    return new_url
 def compliance_api_call(encoded_hash,signed_xmlfile_name,invoice_number):
                 try:
+                    
+                    sale_doc = frappe.get_doc("Sales Invoice", invoice_number)
+                    company_name = sale_doc.company
 
+                    
+                    
                     invoice_version = get_invoice_version()
                     print("compliance method",invoice_version)
-
-
-                    sale_doc = frappe.get_doc("Sales Invoice", invoice_number)
                    
                     #calling token method
-                    token = get_access_token(sale_doc.company)
+                    token = get_access_token(company_name)
                    
                     print("hash",encoded_hash)
-                    print("xml",signed_xmlfile_name)                   
-                    payload = {
-                                "documents": [
-                                    {
-                                        "format": "XML",
-                                        "documentHash": encoded_hash,
-                                        "codeNumber": invoice_number,
-                                        "document": signed_xmlfile_name,  # Replace with actual Base64 encoded value
-                                    }
-                                ]
-                            }
-                    payload_json = json.dumps(payload)
-                    
-                    # company = settings.company
-                    # company_name = frappe.db.get_value("Company", company, "abbr")
-                    # basic_auth = settings.get("basic_auth", "{}")
-                    # frappe.msgprint(basic_auth)
-                    # basic_auth_data = json.loads(basic_auth)
-                    # csid = get_csid_for_company(basic_auth_data, company_name)
-                    # frappe.msgprint(csid)
-                    # if csid:
-                    # token = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk2RjNBNjU2OEFEQzY0MzZDNjVBNDg1MUQ5REM0NTlFQTlCM0I1NTRSUzI1NiIsIng1dCI6Imx2T21Wb3JjWkRiR1draFIyZHhGbnFtenRWUSIsInR5cCI6ImF0K2p3dCJ9.eyJpc3MiOiJodHRwczovL3ByZXByb2QtaWRlbnRpdHkubXlpbnZvaXMuaGFzaWwuZ292Lm15IiwibmJmIjoxNzIxMTI2MDI2LCJpYXQiOjE3MjExMjYwMjYsImV4cCI6MTcyMTEyOTYyNiwiYXVkIjpbIkludm9pY2luZ0FQSSIsImh0dHBzOi8vcHJlcHJvZC1pZGVudGl0eS5teWludm9pcy5oYXNpbC5nb3YubXkvcmVzb3VyY2VzIl0sInNjb3BlIjpbIkludm9pY2luZ0FQSSJdLCJjbGllbnRfaWQiOiI0YzM3NjZkYy1iMDZjLTQ2MjItODUzOC01NmUyMTdlZTcyNjciLCJJc1RheFJlcHJlcyI6IjEiLCJJc0ludGVybWVkaWFyeSI6IjAiLCJJbnRlcm1lZElkIjoiMCIsIkludGVybWVkVElOIjoiIiwiSW50ZXJtZWRFbmZvcmNlZCI6IjIiLCJuYW1lIjoiQzEwODA2NTIxMDkwOjRjMzc2NmRjLWIwNmMtNDYyMi04NTM4LTU2ZTIxN2VlNzI2NyIsIlNTSWQiOiI1YmRiYjQ1Yy02Mjk5LTFiN2ItZTRhYS1mYmQwYThhZGQ1NTEiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJFUlBOZXh0IiwiVGF4SWQiOiI4NjYiLCJUYXhUaW4iOiJDMTA4MDY1MjEwOTAiLCJQcm9mSWQiOiIyMDY4IiwiSXNUYXhBZG1pbiI6IjAiLCJJc1N5c3RlbSI6IjEiLCJOYXRJZCI6IiJ9.Q2A_WSJ_HiwJ5HGusTZ-mw3zGPgOOS7_e0IJr2-9IzD6XTfUKw7p9TvgIbkg2meF3V4lBngmTvTwVQuxQBt4ZBG4A07sOfsRaEAjqxfZRs16KOx3OtYrUnOLwj5fr0mLa4HMWnZJRam0KmpMjcaONC6p3CPoKtwBh-ofkHVUgcQIE3SmKnPs0t1zFhpfHt9hTd8U1qxWTnG1jmRDTcMFdCNq_fvO8g2YNcOt_1ddLqHqmsEDxzMfQPdJ8GLH-e_84Pr1GSWb3oRsrZqqG4z8t-9g9wbqgYydpfaeVzHppmvqEHYYhjPx8HTOvDIrsrOGmF0msiv6pDzdFv1-9TFStQ"
-                    headers = {
-                        'accept': 'application/json',
-                        'Accept-Language': 'en',
-                        'X-Rate-Limit-Limit': '1000',
-                        # 'Accept-Version': 'V2',
-                        'Authorization': f"Bearer {token}",
-                        'Content-Type': 'application/json'
-                    }
-                    # else:
-                    #     frappe.throw("CSID for company {} not found".format(company_name))
+                    print("xml",signed_xmlfile_name) 
+
+                    if token:                 
+                        payload = {
+                                    "documents": [
+                                        {
+                                            "format": "XML",
+                                            "documentHash": encoded_hash,
+                                            "codeNumber": invoice_number,
+                                            "document": signed_xmlfile_name,  # Replace with actual Base64 encoded value
+                                        }
+                                    ]
+                                }
+                        payload_json = json.dumps(payload)
+                        
+                        # company = settings.company
+                        # company_name = frappe.db.get_value("Company", company, "abbr")
+                        # basic_auth = settings.get("basic_auth", "{}")
+                        # frappe.msgprint(basic_auth)
+                        # basic_auth_data = json.loads(basic_auth)
+                        # csid = get_csid_for_company(basic_auth_data, company_name)
+                        # frappe.msgprint(csid)
+                        # if csid:
+                        # token = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk2RjNBNjU2OEFEQzY0MzZDNjVBNDg1MUQ5REM0NTlFQTlCM0I1NTRSUzI1NiIsIng1dCI6Imx2T21Wb3JjWkRiR1draFIyZHhGbnFtenRWUSIsInR5cCI6ImF0K2p3dCJ9.eyJpc3MiOiJodHRwczovL3ByZXByb2QtaWRlbnRpdHkubXlpbnZvaXMuaGFzaWwuZ292Lm15IiwibmJmIjoxNzIxMTI2MDI2LCJpYXQiOjE3MjExMjYwMjYsImV4cCI6MTcyMTEyOTYyNiwiYXVkIjpbIkludm9pY2luZ0FQSSIsImh0dHBzOi8vcHJlcHJvZC1pZGVudGl0eS5teWludm9pcy5oYXNpbC5nb3YubXkvcmVzb3VyY2VzIl0sInNjb3BlIjpbIkludm9pY2luZ0FQSSJdLCJjbGllbnRfaWQiOiI0YzM3NjZkYy1iMDZjLTQ2MjItODUzOC01NmUyMTdlZTcyNjciLCJJc1RheFJlcHJlcyI6IjEiLCJJc0ludGVybWVkaWFyeSI6IjAiLCJJbnRlcm1lZElkIjoiMCIsIkludGVybWVkVElOIjoiIiwiSW50ZXJtZWRFbmZvcmNlZCI6IjIiLCJuYW1lIjoiQzEwODA2NTIxMDkwOjRjMzc2NmRjLWIwNmMtNDYyMi04NTM4LTU2ZTIxN2VlNzI2NyIsIlNTSWQiOiI1YmRiYjQ1Yy02Mjk5LTFiN2ItZTRhYS1mYmQwYThhZGQ1NTEiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJFUlBOZXh0IiwiVGF4SWQiOiI4NjYiLCJUYXhUaW4iOiJDMTA4MDY1MjEwOTAiLCJQcm9mSWQiOiIyMDY4IiwiSXNUYXhBZG1pbiI6IjAiLCJJc1N5c3RlbSI6IjEiLCJOYXRJZCI6IiJ9.Q2A_WSJ_HiwJ5HGusTZ-mw3zGPgOOS7_e0IJr2-9IzD6XTfUKw7p9TvgIbkg2meF3V4lBngmTvTwVQuxQBt4ZBG4A07sOfsRaEAjqxfZRs16KOx3OtYrUnOLwj5fr0mLa4HMWnZJRam0KmpMjcaONC6p3CPoKtwBh-ofkHVUgcQIE3SmKnPs0t1zFhpfHt9hTd8U1qxWTnG1jmRDTcMFdCNq_fvO8g2YNcOt_1ddLqHqmsEDxzMfQPdJ8GLH-e_84Pr1GSWb3oRsrZqqG4z8t-9g9wbqgYydpfaeVzHppmvqEHYYhjPx8HTOvDIrsrOGmF0msiv6pDzdFv1-9TFStQ"
+                        headers = {
+                            'accept': 'application/json',
+                            'Accept-Language': 'en',
+                            'X-Rate-Limit-Limit': '1000',
+                            # 'Accept-Version': 'V2',
+                            'Authorization': f"Bearer {token}",
+                            'Content-Type': 'application/json'
+                        }
+                    else:
+                        frappe.throw("Token for company {} not found".format(company_name))
                     try:
                         # frappe.throw("inside compliance api call2")
                         # response = requests.request("POST", url=get_API_url(base_url="compliance/invoices"), headers=headers, data=payload)
+                        
+                        #Submit Documents Api
+                        #Posting Invoice to Lhdn Portal
+                        
+                        ## First Api
                         api_url = get_API_url(base_url=f"/api/{invoice_version}/documentsubmissions")
                         response = requests.post(api_url, headers=headers, data=payload_json)
 
                         response_text = response.text
                         response_status_code= response.status_code
 
+                        print("checking reposnse",response_text)
+                        print("response.status_code",response.status_code)
+
                         # frappe.msgprint(f"API Status: {response_status}\nResponse: {response_text}")
                         # frappe.msgprint(f"API Status: {response_status}\nResponse:\n{response_text}")
 
                         
+                        #Handling Response
                         if response_status_code == 202:
                             # Parse the JSON response
                             response_data = json.loads(response_text)
@@ -298,25 +331,78 @@ def compliance_api_call(encoded_hash,signed_xmlfile_name,invoice_number):
                             # Extract submissionUid and uuid
                             submission_uid = response_data.get("submissionUid")
                             accepted_documents = response_data.get("acceptedDocuments", [])
+                            rejected_documents = response_data.get("rejectedDocuments", [])
+
                             
+                            #Document
                             if accepted_documents:
+                                print ("enter in accepted doc")
                                 uuid = accepted_documents[0].get("uuid")
                                 
                                 # Update the Sales Invoice document with submissionUid and uuid
                                 sale_doc.db_set("custom_submissionuid", submission_uid)  
                                 sale_doc.db_set("custom_uuid", uuid) 
 
+                                #Get Document Details Api call
                                 #https://{{apiBaseUrl}}/api/v1.0/documents/51W5N1C6SCZ9AHBK39YQF03J10/details
                                 api_url = get_API_url(base_url=f"/api/{invoice_version}/documents/{uuid}/details")
+                                status_api_response = requests.get(api_url, headers=headers)                                
+                                print("doc status",status_api_response)
+                                status_data = status_api_response.json()
 
                                 
-
-                                status_response = requests.get(api_url, headers=headers)
-                                print("doc status",status_response)
-                                status_data = status_response.json()
                                 doc_status = status_data.get("status")
+                                long_id = status_data.get("longId")
+                                sale_doc.db_set("custom_long_id", long_id)
+
+                                #{envbaseurl}/uuid-of-document/share/longid
+                                #https://preprod.myinvois.hasil.gov.my/GFSV5S3DR07TMXCS7033GA3J10/share/NZR8D94N3JW93KKX7033GA3J10hr8g6D1721560566"
+
+                                if doc_status == 'Valid':
+                                    print("enter in valid")
+                                    if uuid and long_id:
+                                        qr_code_url = make_qr_code_url(uuid,long_id)
+                                        #remove -api
+                                        url = remove_api_from_url(qr_code_url)
+                                        
+                                        sale_doc.db_set("custom_lhdn_status", doc_status)
+                                        sale_doc.db_set("custom_qr_code_link",url)
+                                    
+                                    
+                                    # qr_code_url = make_qr_code_url(uuid,doc_long_id)
+                                    
+                                    # sale_doc.db_set("custom_lhdn_status", doc_status)
+                                    # sale_doc.db_set("custom_qr_code_link",qr_code_url)  
+
+                                    
+                                    frappe.msgprint(f"API Status Code: {response_status_code}<br>Document Status: {doc_status}<br>Message : QR Code Url Updated<br>Response: {response_text}")
+
+                                else:
+                                    print("enter in else validation")
+                                    doc_status = "InProgress"
+                                    sale_doc.db_set("custom_lhdn_status", doc_status)  
+
+                                    frappe.msgprint(f"API Status Code: {response_status_code}<br>Document Status: {doc_status}<br>Response: <br>{response_text}")
+
+                                    # print("enter in else validaiton")
+                                    # # validation_results = status_data.get("validationResults", [])
+                                    # # uuid = accepted_documents[0].get("uuid")
+                                    # validation_results=status_data.get("validation_results")
+                                    # frappe.msgprint(f"API Status Code: {response_status_code}<br>Document Status: {doc_status}<br>Response: {validation_results}")
+
+                                
+                            if rejected_documents:
+                                print("enter in rejected doc")
+                                doc_status = "Rejected"
+                                sale_doc.db_set("custom_lhdn_status", doc_status)  
+
+                                frappe.msgprint(f"Document Status: {doc_status}<br>Response: <br>{response_text}")
+
+                                # frappe.msgprint(f"API Status Code: {response_status_code}<br>Document Status: {doc_status}<br>Response: {validation_results}")
+
+                                   
                                
-                            frappe.msgprint(f"API Status Code: {response_status_code}<br>Document Status: {doc_status}<br>Response: {response_text}")
+                            #frappe.msgprint(f"API Status Code: {response_status_code}<br>Document Status: {doc_status}<br>Response: {response_text}")
 
                             # # Create a custom dialog
                             # dialog = frappe.ui.Dialog({
@@ -339,7 +425,10 @@ def compliance_api_call(encoded_hash,signed_xmlfile_name,invoice_number):
                     frappe.throw("ERROR in clearance invoice ,lhdn validation:  " + str(e) )
 
 
-
+def make_qr_code_url(uuid,long_id):
+        qr_code_url = get_API_url(base_url=f"/{uuid}/share/{long_id}")
+    
+        return qr_code_url
 
 def fetch_document_status(sale_doc):
     # Your API call to fetch the document status and update the Sales Invoice
