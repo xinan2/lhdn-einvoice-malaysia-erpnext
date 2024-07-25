@@ -136,14 +136,22 @@ def salesinvoice_data(invoice,invoice_number):
                 # cbc_InvoiceTypeCode = ET.SubElement(invoice, "cbc:InvoiceTypeCode")
                 # cbc_InvoiceTypeCode.set("listVersionID", "1.0")  # Current e-Invoice version
 
+                 # Get the current date and time in UTC
+                now_utc = datetime.now(timezone.utc)
+                issue_date = now_utc.date()
+                issue_time = now_utc.time().replace(microsecond=0)  # Remove microseconds for cleaner output
+
 
                 cbc_IssueDate = ET.SubElement(invoice, "cbc:IssueDate")
-                cbc_IssueDate.text = str(sales_invoice_doc.posting_date)  #Erp sales invoice  posting_date
+                cbc_IssueDate.text = str(issue_date)  #Erp sales invoice  posting_date
+
+                # cbc_IssueDate.text = str(sales_invoice_doc.posting_date)  #Erp sales invoice  posting_date
                 print("issue date ",cbc_IssueDate.text)
                 # cbc_IssueDate.text = "2024-07-13"
 
                 cbc_IssueTime = ET.SubElement(invoice, "cbc:IssueTime")
-                cbc_IssueTime.text = get_Issue_Time(invoice_number)       #Erp sales invoice  posting_time
+                cbc_IssueTime.text = issue_time.isoformat() + 'Z'
+                # cbc_IssueTime.text = get_Issue_Time(invoice_number)       #Erp sales invoice  posting_time
                 print("issue time",cbc_IssueTime.text)
                 # cbc_IssueTime.text = "15:30:00Z"      #Erp sales invoice  posting_time
 
