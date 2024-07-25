@@ -158,5 +158,21 @@
   "property_type": "Link",
   "row_name": null,
   "value": "Link"
+ },
+ {
+  "default_value": null,
+  "doc_type": "Customer",
+  "docstatus": 0,
+  "doctype": "Property Setter",
+  "doctype_or_field": "DocField",
+  "field_name": "customer_primary_address",
+  "is_system_generated": 0,
+  "modified": "2024-07-26 01:27:40.327166",
+  "module": "myinvois",
+  "name": "Customer-customer_primary_address-reqd",
+  "property": "reqd",
+  "property_type": "reqd",
+  "row_name": null,
+  "value": "1"
  }
 ]
