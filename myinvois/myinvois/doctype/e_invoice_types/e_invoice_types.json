@@ -1,8 +1,8 @@
 {
  "actions": [],
- "allow_import": 1,
+ "allow_rename": 1,
  "autoname": "field:code",
- "creation": "2024-06-28 06:22:46.614027",
+ "creation": "2024-07-25 19:21:35.636823",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -11,24 +11,23 @@
  ],
  "fields": [
   {
-   "fieldname": "description",
-   "fieldtype": "Long Text",
-   "in_list_view": 1,
-   "label": "Description"
-  },
-  {
    "fieldname": "code",
    "fieldtype": "Data",
-   "label": "(MSIC) Codes",
+   "label": "Code",
    "unique": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Data",
+   "label": "Description"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-25 20:00:29.239255",
+ "modified": "2024-07-25 19:23:13.290297",
  "modified_by": "Administrator",
  "module": "myinvois",
- "name": "Industrial Classification",
+ "name": "E-Invoice Types",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
@@ -47,6 +46,5 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
- "title_field": "code"
+ "states": []
 }

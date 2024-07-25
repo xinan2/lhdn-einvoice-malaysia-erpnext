@@ -1,0 +1,362 @@
+[
+ {
+  "code": "001",
+  "description": "Breastfeeding equipment ",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.074694",
+  "name": "001"
+ },
+ {
+  "code": "002",
+  "description": "Child care centres and kindergartens fees",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.092920",
+  "name": "002"
+ },
+ {
+  "code": "004",
+  "description": "Consolidated e-Invoice ",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.122357",
+  "name": "004"
+ },
+ {
+  "code": "005",
+  "description": "Construction materials (as specified under Fourth Schedule of the Lembaga Pembangunan Industri Pembinaan Malaysia Act 1994)",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.137761",
+  "name": "005"
+ },
+ {
+  "code": "006",
+  "description": "Disbursement ",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.155395",
+  "name": "006"
+ },
+ {
+  "code": "007",
+  "description": "Donation",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.171736",
+  "name": "007"
+ },
+ {
+  "code": "008",
+  "description": "e-Commerce - e-Invoice to buyer / purchaser",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.189491",
+  "name": "008"
+ },
+ {
+  "code": "009",
+  "description": "e-Commerce - Self-billed e-Invoice to seller, logistics, etc. ",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.207496",
+  "name": "009"
+ },
+ {
+  "code": "010",
+  "description": "Education fees",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.223260",
+  "name": "010"
+ },
+ {
+  "code": "011",
+  "description": "Goods on consignment (Consignor)",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.239105",
+  "name": "011"
+ },
+ {
+  "code": "012",
+  "description": "Goods on consignment (Consignee)",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.254868",
+  "name": "012"
+ },
+ {
+  "code": "013",
+  "description": "Gym membership",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.271183",
+  "name": "013"
+ },
+ {
+  "code": "014",
+  "description": "Insurance - Education and medical benefits",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.285814",
+  "name": "014"
+ },
+ {
+  "code": "015",
+  "description": "Insurance - Takaful or life insurance",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.300214",
+  "name": "015"
+ },
+ {
+  "code": "016",
+  "description": "Interest and financing expenses",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.316088",
+  "name": "016"
+ },
+ {
+  "code": "017",
+  "description": "Internet subscription ",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.329876",
+  "name": "017"
+ },
+ {
+  "code": "018",
+  "description": "Land and building",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.344449",
+  "name": "018"
+ },
+ {
+  "code": "019",
+  "description": "Medical examination for learning disabilities and early intervention or rehabilitation treatments of learning disabilities",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.359683",
+  "name": "019"
+ },
+ {
+  "code": "020",
+  "description": "Medical examination or vaccination expenses",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.375453",
+  "name": "020"
+ },
+ {
+  "code": "021",
+  "description": "Medical expenses for serious diseases",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.390336",
+  "name": "021"
+ },
+ {
+  "code": "022",
+  "description": "Others",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.405289",
+  "name": "022"
+ },
+ {
+  "code": "023",
+  "description": "Petroleum operations (as defined in Petroleum (Income Tax) Act 1967)",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.420581",
+  "name": "023"
+ },
+ {
+  "code": "024",
+  "description": "Private retirement scheme or deferred annuity scheme ",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.435523",
+  "name": "024"
+ },
+ {
+  "code": "025",
+  "description": "Motor vehicle",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.449895",
+  "name": "025"
+ },
+ {
+  "code": "026",
+  "description": "Subscription of books / journals / magazines / newspapers / other similar publications",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.463330",
+  "name": "026"
+ },
+ {
+  "code": "027",
+  "description": "Reimbursement ",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.478401",
+  "name": "027"
+ },
+ {
+  "code": "028",
+  "description": "Rental of motor vehicle",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.493041",
+  "name": "028"
+ },
+ {
+  "code": "029",
+  "description": "EV charging facilities (Installation, rental, sale / purchase or subscription fees) ",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.509300",
+  "name": "029"
+ },
+ {
+  "code": "030",
+  "description": "Repair and maintenance",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.522844",
+  "name": "030"
+ },
+ {
+  "code": "031",
+  "description": "Research and development ",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.538888",
+  "name": "031"
+ },
+ {
+  "code": "032",
+  "description": "Foreign income ",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.552640",
+  "name": "032"
+ },
+ {
+  "code": "033",
+  "description": "Self-billed - Betting and gaming ",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.566451",
+  "name": "033"
+ },
+ {
+  "code": "034",
+  "description": "Self-billed - Importation of goods ",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.581711",
+  "name": "034"
+ },
+ {
+  "code": "035",
+  "description": "Self-billed - Importation of services",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.593535",
+  "name": "035"
+ },
+ {
+  "code": "036",
+  "description": "Self-billed - Others",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.607875",
+  "name": "036"
+ },
+ {
+  "code": "037",
+  "description": "Self-billed - Monetary payment to agents, dealers or distributors ",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.621387",
+  "name": "037"
+ },
+ {
+  "code": "038",
+  "description": "Sports equipment, rental / entry fees for sports facilities, registration in sports competition or sports training fees imposed by associations / sports clubs / companies registered with the Sports Commissioner or Companies Commission of Malaysia and carrying out sports activities as listed under the Sports Development Act 1997",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.638162",
+  "name": "038"
+ },
+ {
+  "code": "039",
+  "description": "Supporting equipment for disabled person",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.653468",
+  "name": "039"
+ },
+ {
+  "code": "040",
+  "description": "Voluntary contribution to approved provident fund ",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.670386",
+  "name": "040"
+ },
+ {
+  "code": "041",
+  "description": "Dental examination or treatment",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.685014",
+  "name": "041"
+ },
+ {
+  "code": "042",
+  "description": "Fertility treatment",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.701804",
+  "name": "042"
+ },
+ {
+  "code": "043",
+  "description": "Treatment and home care nursing, daycare centres and residential care centers",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.715953",
+  "name": "043"
+ },
+ {
+  "code": "044",
+  "description": "Vouchers, gift cards, loyalty points, etc",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.733948",
+  "name": "044"
+ },
+ {
+  "code": "045",
+  "description": "Self-billed - Non-monetary payment to agents, dealers or distributors",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-25 21:15:24.755144",
+  "name": "045"
+ },
+ {
+  "code": "003",
+  "description": "Computer, smartphone or tablet",
+  "docstatus": 0,
+  "doctype": "Item Classification Codes",
+  "modified": "2024-07-06 18:21:19.087491",
+  "name": "003"
+ }
+]

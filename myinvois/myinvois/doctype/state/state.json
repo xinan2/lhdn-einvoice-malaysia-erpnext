@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:state",
  "creation": "2024-06-30 05:46:15.320776",
@@ -28,7 +29,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-06-30 05:51:30.995050",
+ "modified": "2024-07-25 21:19:16.056799",
  "modified_by": "Administrator",
  "module": "myinvois",
  "name": "State",

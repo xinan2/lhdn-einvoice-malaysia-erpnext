@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:code",
  "creation": "2024-07-06 13:39:26.625688",
@@ -20,7 +21,7 @@
   },
   {
    "fieldname": "description",
-   "fieldtype": "Data",
+   "fieldtype": "Long Text",
    "in_list_view": 1,
    "label": "Description",
    "reqd": 1
@@ -28,7 +29,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-06 18:20:32.022245",
+ "modified": "2024-07-25 21:13:00.380592",
  "modified_by": "Administrator",
  "module": "myinvois",
  "name": "Item Classification Codes",

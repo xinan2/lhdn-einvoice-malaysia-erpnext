@@ -1,0 +1,66 @@
+[
+ {
+  "code": "01",
+  "description": "Invoice",
+  "docstatus": 0,
+  "doctype": "E-Invoice Types",
+  "modified": "2024-07-25 19:26:03.498871",
+  "name": "01"
+ },
+ {
+  "code": "02",
+  "description": "Credit Note",
+  "docstatus": 0,
+  "doctype": "E-Invoice Types",
+  "modified": "2024-07-25 19:26:25.693005",
+  "name": "02"
+ },
+ {
+  "code": "03",
+  "description": "Debit Note",
+  "docstatus": 0,
+  "doctype": "E-Invoice Types",
+  "modified": "2024-07-25 19:26:39.207132",
+  "name": "03"
+ },
+ {
+  "code": "04",
+  "description": "Refund Note",
+  "docstatus": 0,
+  "doctype": "E-Invoice Types",
+  "modified": "2024-07-25 19:26:52.987762",
+  "name": "04"
+ },
+ {
+  "code": "11",
+  "description": "Self-billed Invoice",
+  "docstatus": 0,
+  "doctype": "E-Invoice Types",
+  "modified": "2024-07-25 19:27:13.318450",
+  "name": "11"
+ },
+ {
+  "code": "12",
+  "description": "Self-billed Credit Note",
+  "docstatus": 0,
+  "doctype": "E-Invoice Types",
+  "modified": "2024-07-25 19:27:24.413317",
+  "name": "12"
+ },
+ {
+  "code": "13",
+  "description": "Self-billed Debit Note",
+  "docstatus": 0,
+  "doctype": "E-Invoice Types",
+  "modified": "2024-07-25 19:27:35.038617",
+  "name": "13"
+ },
+ {
+  "code": "14",
+  "description": "Self-billed Refund Note",
+  "docstatus": 0,
+  "doctype": "E-Invoice Types",
+  "modified": "2024-07-25 19:27:49.368636",
+  "name": "14"
+ }
+]

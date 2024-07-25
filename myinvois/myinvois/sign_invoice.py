@@ -222,11 +222,14 @@ def refresh_doc_status(uuid,invoice_number):
         #https://{{apiBaseUrl}}/api/v1.0/documents/51W5N1C6SCZ9AHBK39YQF03J10/details
         api_url = get_API_url(base_url=f"/api/{invoice_version}/documents/{uuid}/details")
         status_response = requests.get(api_url, headers=headers)
+        response_text = status_response.text
 
       
         print("doc status",status_response)
         status_data = status_response.json()
         doc_status = status_data.get("status")
+        long_id = status_data.get("longId")
+        print("status code longid",status_data.get("longId"))
 
         sale_doc.db_set("custom_lhdn_status", doc_status)
 
@@ -238,8 +241,13 @@ def refresh_doc_status(uuid,invoice_number):
                 url = remove_api_from_url(qr_code_url)
                 
                 sale_doc.db_set("custom_qr_code_link",url)
-                frappe.msgprint("Qr Code Updated")
+                # frappe.msgprint("Qr Code Updated")
+                frappe.msgprint(f"Status: {doc_status}<br>Message : QR Code Url Updated<br>Response: {response_text}")
 
+        else:
+            frappe.msgprint(f"Status: {doc_status}<br>Message : QR Code Url Updated<br>Response: {response_text}")
+
+            
 
 
 

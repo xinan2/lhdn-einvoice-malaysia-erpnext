@@ -1,0 +1,58 @@
+[
+ {
+  "description": "Tourism Tax",
+  "docstatus": 0,
+  "doctype": "Taxable Types",
+  "modified": "2024-07-25 21:04:49.203334",
+  "name": "03",
+  "tax_code": "03"
+ },
+ {
+  "description": "High-Value Goods Tax",
+  "docstatus": 0,
+  "doctype": "Taxable Types",
+  "modified": "2024-07-25 21:05:01.917693",
+  "name": "04",
+  "tax_code": "04"
+ },
+ {
+  "description": "Sales Tax on Low Value Goods",
+  "docstatus": 0,
+  "doctype": "Taxable Types",
+  "modified": "2024-07-25 21:05:13.641183",
+  "name": "05",
+  "tax_code": "05"
+ },
+ {
+  "description": "Not Applicable",
+  "docstatus": 0,
+  "doctype": "Taxable Types",
+  "modified": "2024-07-25 21:05:28.241552",
+  "name": "06",
+  "tax_code": "06"
+ },
+ {
+  "description": "Service Tax",
+  "docstatus": 0,
+  "doctype": "Taxable Types",
+  "modified": "2024-07-16 17:50:29.026660",
+  "name": "02",
+  "tax_code": "02"
+ },
+ {
+  "description": "Tax exemption",
+  "docstatus": 0,
+  "doctype": "Taxable Types",
+  "modified": "2024-07-07 04:07:04.723001",
+  "name": "E",
+  "tax_code": "E"
+ },
+ {
+  "description": "Sales Tax",
+  "docstatus": 0,
+  "doctype": "Taxable Types",
+  "modified": "2024-07-06 23:38:01.912234",
+  "name": "01",
+  "tax_code": "01"
+ }
+]

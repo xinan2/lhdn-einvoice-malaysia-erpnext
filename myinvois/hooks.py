@@ -9,6 +9,24 @@ app_license = "mit"
 # Includes in <head>
 # ------------------
 
+fixtures = [
+    
+    {"dt": "Property Setter", "filters": [
+                       
+            ["module", "=", "myinvois"],
+        ]},
+    
+    {"dt": "State"},
+    {"dt": "Item Classification Codes"},
+    {"dt": "Industrial Classification"},
+    {"dt": "E-Invoice Types"},
+    {"dt": "Taxable Types"},
+
+
+
+
+]
+
 # include js, css files in header of desk.html
 # app_include_css = "/assets/myinvois/css/myinvois.css"
 # app_include_js = "/assets/myinvois/js/myinvois.js"
