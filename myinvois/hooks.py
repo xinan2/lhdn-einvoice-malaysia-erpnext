@@ -21,11 +21,11 @@ fixtures = [
     {"dt": "Industrial Classification"},
     {"dt": "E-Invoice Types"},
     {"dt": "Taxable Types"},
-
-
-
-
+    {"dt": "DocType","filters": { "custom" : ["=", "1"], "name":"testing child table" }}
 ]
+
+
+
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/myinvois/css/myinvois.css"
