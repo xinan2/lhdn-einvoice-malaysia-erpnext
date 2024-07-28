@@ -21,7 +21,7 @@ fixtures = [
     {"dt": "Industrial Classification"},
     {"dt": "E-Invoice Types"},
     {"dt": "Taxable Types"},
-    {"dt": "DocType","filters": { "custom" : ["=", "1"], "name":"testing child table" }}
+    # {"dt": "DocType","filters": { "custom" : ["=", "1"], "name":"testing child table" }}
 ]
 
 
