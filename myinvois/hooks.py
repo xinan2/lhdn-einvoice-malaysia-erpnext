@@ -4,6 +4,7 @@ app_publisher = "Rehan"
 app_description = "myinvois"
 app_email = "rehan.muhamad675@gmail.com"
 app_license = "mit"
+
 # required_apps = []
 
 # Includes in <head>
@@ -257,3 +258,14 @@ doctype_js = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+# jenv = {
+# 	"methods": [
+# 		"gen_qrcode:myinvois.sign_invoice.gen_qrcode"
+# 	]
+# }
+
+jinja = {
+	"methods": [
+		"myinvois.myinvois.sign_invoice.gen_qrcode"
+	],
+}

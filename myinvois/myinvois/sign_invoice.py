@@ -44,6 +44,19 @@ from urllib.parse import urlparse, urlunparse
 
 
 
+import frappe
+import pyqrcode
+
+import qrcode
+import base64
+from io import BytesIO
+
+
+@frappe.whitelist()
+def gen_qrcode(text):
+    data = pyqrcode.create(text)
+
+    return f'data:image/png;base64,{data.png_as_base64_str(scale=2)}'
 
 
 
@@ -317,6 +330,8 @@ def compliance_api_call(encoded_hash,signed_xmlfile_name,invoice_number):
                         #Submit Documents Api
                         #Posting Invoice to Lhdn Portal
                         
+                        frappe.publish_progress(25, title='Progressing', description='wait sometime')
+
                         ## First Api
                         api_url = get_API_url(base_url=f"/api/{invoice_version}/documentsubmissions")
                         response = requests.post(api_url, headers=headers, data=payload_json)
@@ -327,12 +342,16 @@ def compliance_api_call(encoded_hash,signed_xmlfile_name,invoice_number):
                         print("checking reposnse",response_text)
                         print("response.status_code",response.status_code)
 
+
                         # frappe.msgprint(f"API Status: {response_status}\nResponse: {response_text}")
                         # frappe.msgprint(f"API Status: {response_status}\nResponse:\n{response_text}")
 
-                        
+                        frappe.publish_progress(50, title='Progressing', description='wait sometime')
+
                         #Handling Response
                         if response_status_code == 202:
+                            frappe.publish_progress(100, title='Progressing', description='wait sometime')
+
                             # Parse the JSON response
                             response_data = json.loads(response_text)
                             
@@ -340,7 +359,8 @@ def compliance_api_call(encoded_hash,signed_xmlfile_name,invoice_number):
                             submission_uid = response_data.get("submissionUid")
                             accepted_documents = response_data.get("acceptedDocuments", [])
                             rejected_documents = response_data.get("rejectedDocuments", [])
-
+                                                            
+                            
                             
                             #Document
                             if accepted_documents:
@@ -367,6 +387,7 @@ def compliance_api_call(encoded_hash,signed_xmlfile_name,invoice_number):
                                 #https://preprod.myinvois.hasil.gov.my/GFSV5S3DR07TMXCS7033GA3J10/share/NZR8D94N3JW93KKX7033GA3J10hr8g6D1721560566"
 
                                 if doc_status == 'Valid':
+
                                     print("enter in valid")
                                     if uuid and long_id:
                                         qr_code_url = make_qr_code_url(uuid,long_id)
@@ -383,9 +404,10 @@ def compliance_api_call(encoded_hash,signed_xmlfile_name,invoice_number):
                                     # sale_doc.db_set("custom_qr_code_link",qr_code_url)  
 
                                     
-                                    frappe.msgprint(f"API Status Code: {response_status_code}<br>Document Status: {doc_status}<br>Message : QR Code Url Updated<br>Response: {response_text}")
+                                        frappe.msgprint(f"API Status Code: {response_status_code}<br>Document Status: {doc_status}<br>Message : QR Code Url Updated<br>Response: {response_text}")
 
                                 else:
+
                                     print("enter in else validation")
                                     doc_status = "InProgress"
                                     sale_doc.db_set("custom_lhdn_status", doc_status)  
@@ -398,8 +420,11 @@ def compliance_api_call(encoded_hash,signed_xmlfile_name,invoice_number):
                                     # validation_results=status_data.get("validation_results")
                                     # frappe.msgprint(f"API Status Code: {response_status_code}<br>Document Status: {doc_status}<br>Response: {validation_results}")
 
-                                
+                            
                             if rejected_documents:
+                                frappe.publish_progress(100, title='Progressing', description='wait sometime')
+
+
                                 print("enter in rejected doc")
                                 doc_status = "Rejected"
                                 sale_doc.db_set("custom_lhdn_status", doc_status)  
