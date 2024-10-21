@@ -29,10 +29,11 @@ def xml_tags():
                 invoice.set("xmlns:cbc", "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
                 
                 # Add UBLVersionID
-                ubl_version_id = ET.SubElement(invoice, "cbc:UBLVersionID")
-                ubl_version_id.text = "2.1"
+                # ubl_version_id = ET.SubElement(invoice, "cbc:UBLVersionID")
+                # ubl_version_id.text = "2.1"
+               
                 #digital signature work
-                #invoice.set("xmlns:ext", "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2")   
+                invoice.set("xmlns:ext", "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2")   
 
                
                 # ubl_extensions = ET.SubElement(invoice, "ext:UBLExtensions")
@@ -41,9 +42,9 @@ def xml_tags():
                 # extension_uri.text = "urn:oasis:names:specification:ubl:dsig:enveloped:xades"
                 # extension_content = ET.SubElement(ubl_extension, "ext:ExtensionContent")
                 # UBL_Document_Signatures = ET.SubElement(extension_content , "sig:UBLDocumentSignatures"    )
-                # UBL_Document_Signatures.set("xmlns:sig" , "urn:oasis:names:specification:ubl:schema:xsd:CommonSignatureComponents-2")
                 # UBL_Document_Signatures.set("xmlns:sac" , "urn:oasis:names:specification:ubl:schema:xsd:SignatureAggregateComponents-2")
                 # UBL_Document_Signatures.set("xmlns:sbc" , "urn:oasis:names:specification:ubl:schema:xsd:SignatureBasicComponents-2")
+                # UBL_Document_Signatures.set("xmlns:sig" , "urn:oasis:names:specification:ubl:schema:xsd:CommonSignatureComponents-2")
                 # Signature_Information = ET.SubElement(UBL_Document_Signatures , "sac:SignatureInformation"  )
                 # id = ET.SubElement(Signature_Information , "cbc:ID"  )
                 # id.text = "urn:oasis:names:specification:ubl:signature:1"
@@ -56,9 +57,9 @@ def xml_tags():
                 # Canonicalization_Method = ET.SubElement(Signed_Info , "ds:CanonicalizationMethod"  )
                 # Canonicalization_Method.set("Algorithm" , "http://www.w3.org/2006/12/xml-c14n11"  )
                 # Signature_Method = ET.SubElement(Signed_Info , "ds:SignatureMethod"  )
-                # Signature_Method.set("Algorithm" , "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"  )
+                # Signature_Method.set("Algorithm" , "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"  )
                 # Reference = ET.SubElement(Signed_Info , "ds:Reference"  )
-                # Reference.set("Id"  , "invoiceSignedData")
+                # Reference.set("Id"  , "id-doc-signed-data")
                 # Reference.set("URI"  , "")
                 # Transforms = ET.SubElement(Reference , "ds:Transforms" )
                 # Transform = ET.SubElement(Transforms , "ds:Transform" )
@@ -69,10 +70,10 @@ def xml_tags():
                 # Transform2.set("Algorithm" , "http://www.w3.org/TR/1999/REC-xpath-19991116")
                 # XPath2 = ET.SubElement(Transform2 , "ds:XPath" )
                 # XPath2.text = "not(//ancestor-or-self::cac:Signature)"
-                # Transform3 = ET.SubElement(Transforms , "ds:Transform" )
-                # Transform3.set("Algorithm" , "http://www.w3.org/TR/1999/REC-xpath-19991116")
-                # XPath3 = ET.SubElement(Transform3 , "ds:XPath" )
-                # XPath3.text = "not(//ancestor-or-self::cac:AdditionalDocumentReference[cbc:ID='QR'])"
+                # # Transform3 = ET.SubElement(Transforms , "ds:Transform" )
+                # # Transform3.set("Algorithm" , "http://www.w3.org/TR/1999/REC-xpath-19991116")
+                # # XPath3 = ET.SubElement(Transform3 , "ds:XPath" )
+                # # XPath3.text = "not(//ancestor-or-self::cac:AdditionalDocumentReference[cbc:ID='QR'])"
                 # Transform4 = ET.SubElement(Transforms , "ds:Transform" )
                 # Transform4.set("Algorithm" , "http://www.w3.org/2006/12/xml-c14n11")
                 # Diges_Method = ET.SubElement(Reference , "ds:DigestMethod" )
@@ -80,8 +81,9 @@ def xml_tags():
                 # Diges_value = ET.SubElement(Reference , "ds:DigestValue" )
                 # Diges_value.text = "O/vEnAxjLAlw8kQUy8nq/5n8IEZ0YeIyBFvdQA8+iFM="
                 # Reference2 = ET.SubElement(Signed_Info , "ds:Reference"  )
-                # Reference2.set("URI" , "#xadesSignedProperties")
                 # Reference2.set("Type" , "http://www.w3.org/2000/09/xmldsig#SignatureProperties")
+                # # Reference2.set("URI" , "#xadesSignedProperties")
+                # Reference2.set("URI" , "#id-xades-signed-props")                
                 # Digest_Method1 = ET.SubElement(Reference2 , "ds:DigestMethod"  )
                 # Digest_Method1.set("Algorithm" , "http://www.w3.org/2001/04/xmlenc#sha256")
                 # Digest_value1 = ET.SubElement(Reference2 , "ds:DigestValue"  )
@@ -97,7 +99,8 @@ def xml_tags():
                 # QualifyingProperties.set("Target" , "signature")
                 # QualifyingProperties.set("xmlns:xades" , "http://uri.etsi.org/01903/v1.3.2#")
                 # SignedProperties = ET.SubElement(QualifyingProperties , "xades:SignedProperties"  )
-                # SignedProperties.set("Id" , "xadesSignedProperties")
+                # # SignedProperties.set("Id" , "xadesSignedProperties") id-xades-signed-props
+                # SignedProperties.set("Id" , "id-xades-signed-props") 
                 # SignedSignatureProperties = ET.SubElement(SignedProperties , "xades:SignedSignatureProperties"  )
                 # SigningTime = ET.SubElement(SignedSignatureProperties , "xades:SigningTime"  )
                 # SigningTime.text = "2024-01-24T11:36:34Z"
@@ -147,7 +150,7 @@ def salesinvoice_data(invoice,invoice_number):
 
                 # cbc_IssueDate.text = str(sales_invoice_doc.posting_date)  #Erp sales invoice  posting_date
                 print("issue date ",cbc_IssueDate.text)
-                # cbc_IssueDate.text = "2024-07-13"
+                # cbc_IssueDate.text = "2024-10-06"
 
                 cbc_IssueTime = ET.SubElement(invoice, "cbc:IssueTime")
                 cbc_IssueTime.text = issue_time.isoformat() + 'Z'
@@ -226,7 +229,9 @@ def company_Data(invoice,sales_invoice_doc): #supplier data
                     cbc_ID_Identification.set("schemeID", "PASSPORT")
                 elif supplier_id_type == 'ARMY':
                     cbc_ID_Identification.set("schemeID", "ARMY")
-                cbc_ID_Identification.text = str(supplier_id_number)
+                # cbc_ID_Identification.text = str(supplier_id_number)  #temporary commenting
+                cbc_ID_Identification.text = "199701002338"
+
                 
                 # cbc_ID_Identification.text = "417834-X"
                 # print("supplier",str(supplier_id_number))
@@ -537,7 +542,7 @@ def invoice_Typecode_Compliance(invoice,compliance_type):
         
 
                 cbc_InvoiceTypeCode = ET.SubElement(invoice, "cbc:InvoiceTypeCode")
-                cbc_InvoiceTypeCode.set("listVersionID", "1.0")  # Current e-Invoice version
+                cbc_InvoiceTypeCode.set("listVersionID", "1.1")  # Current e-Invoice version
 
 
                 if compliance_type == "1":  # Invoice
@@ -1187,43 +1192,69 @@ def set_tax_type_main_form(invoice, sales_invoice_doc):
 
 
 def xml_structuring(invoice,sales_invoice_doc):
-            try:
-                xml_declaration = "<?xml version='1.0' encoding='UTF-8'?>\n"
-                tree = ET.ElementTree(invoice)
-                with open(frappe.local.site + "/private/files/xml_files.xml", 'wb') as file:
-                    tree.write(file, encoding='utf-8', xml_declaration=True)
-                with open(frappe.local.site + "/private/files/xml_files.xml", 'r') as file:
-                    xml_string = file.read()
-                xml_dom = minidom.parseString(xml_string)
-                pretty_xml_string = xml_dom.toprettyxml(indent="  ")   # created xml into formatted xml form 
-                with open(frappe.local.site + "/private/files/finalzatcaxml.xml", 'w') as file:
-                    file.write(pretty_xml_string)
-                          # Attach the getting xml for each invoice
-                try:
-                    if frappe.db.exists("File",{ "attached_to_name": sales_invoice_doc.name, "attached_to_doctype": sales_invoice_doc.doctype }):
-                        frappe.db.delete("File",{ "attached_to_name":sales_invoice_doc.name, "attached_to_doctype": sales_invoice_doc.doctype })
-                except Exception as e:
-                    frappe.throw(frappe.get_traceback())
-                
-                try:
-                    fileX = frappe.get_doc(
+  
+    raw_xml = ET.tostring(invoice, encoding='utf-8', method='xml').decode('utf-8')
+    with open(frappe.local.site + "/private/files/create.xml", 'w') as file:
+        file.write(raw_xml)
+    try:
+                    fileXx = frappe.get_doc(
                         {   "doctype": "File",        
                             "file_type": "xml",  
                             "file_name":  "E-invoice-" + sales_invoice_doc.name + ".xml",
                             "attached_to_doctype":sales_invoice_doc.doctype,
                             "attached_to_name":sales_invoice_doc.name, 
-                            "content": pretty_xml_string,
+                            "content": raw_xml,
                             "is_private": 1,})
-                    fileX.save()
-                except Exception as e:
+                    fileXx.save()
+
+
+    except Exception as e:
                     frappe.throw(frappe.get_traceback())
+    return raw_xml
+
+
+# def xml_structuring(invoice,sales_invoice_doc):
+#             try:
+#                 xml_declaration = "<?xml version='1.0' encoding='UTF-8'?>\n"
+#                 tree = ET.ElementTree(invoice)
+#                 with open(frappe.local.site + "/private/files/xml_files.xml", 'wb') as file:
+#                     tree.write(file, encoding='utf-8', xml_declaration=True)
+#                 with open(frappe.local.site + "/private/files/xml_files.xml", 'r') as file:
+#                     xml_string = file.read()
+#                 xml_dom = minidom.parseString(xml_string)
+#                 pretty_xml_string = xml_dom.toprettyxml(indent="  ")   # created xml into formatted xml form 
+#                 print("Main pretty xml string",pretty_xml_string)
+#                 with open(frappe.local.site + "/private/files/finalzatcaxml.xml", 'w') as file:
+#                     file.write(pretty_xml_string)
+#                           # Attach the getting xml for each invoice
+#                 try:
+#                     if frappe.db.exists("File",{ "attached_to_name": sales_invoice_doc.name, "attached_to_doctype": sales_invoice_doc.doctype }):
+#                         frappe.db.delete("File",{ "attached_to_name":sales_invoice_doc.name, "attached_to_doctype": sales_invoice_doc.doctype })
+#                 except Exception as e:
+#                     frappe.throw(frappe.get_traceback())
                 
-                try:
-                    frappe.db.get_value('File', {'attached_to_name':sales_invoice_doc.name, 'attached_to_doctype': sales_invoice_doc.doctype}, ['file_name'])
-                except Exception as e:
-                    frappe.throw(frappe.get_traceback())
-            except Exception as e:
-                    frappe.throw("Error occured in XML structuring and attach. Please contact your system administrator"+ str(e) )
+#                 try:
+#                     fileX = frappe.get_doc(
+#                         {   "doctype": "File",        
+#                             "file_type": "xml",  
+#                             "file_name":  "E-invoice-" + sales_invoice_doc.name + ".xml",
+#                             "attached_to_doctype":sales_invoice_doc.doctype,
+#                             "attached_to_name":sales_invoice_doc.name, 
+#                             "content": pretty_xml_string,
+#                             "is_private": 1,})
+#                     fileX.save()
+#                 except Exception as e:
+#                     frappe.throw(frappe.get_traceback())
+                
+#                 try:
+#                     frappe.db.get_value('File', {'attached_to_name':sales_invoice_doc.name, 'attached_to_doctype': sales_invoice_doc.doctype}, ['file_name'])
+#                 except Exception as e:
+#                     frappe.throw(frappe.get_traceback())
+#             except Exception as e:
+#                     frappe.throw("Error occured in XML structuring and attach. Please contact your system administrator"+ str(e) )
+
+
+
 ## zatacasdk
 # def xml_structuring(invoice,sales_invoice_doc):
 #             try:
@@ -1414,32 +1445,32 @@ def get_pih_for_company(pih_data, company_name):
 
 def additional_Reference(invoice):
             try:
-                settings=frappe.get_doc('Zatca setting')
-                cac_AdditionalDocumentReference2 = ET.SubElement(invoice, "cac:AdditionalDocumentReference")
-                cbc_ID_1_1 = ET.SubElement(cac_AdditionalDocumentReference2, "cbc:ID")
-                cbc_ID_1_1.text = "PIH"
-                cac_Attachment = ET.SubElement(cac_AdditionalDocumentReference2, "cac:Attachment")
-                cbc_EmbeddedDocumentBinaryObject = ET.SubElement(cac_Attachment, "cbc:EmbeddedDocumentBinaryObject")
-                cbc_EmbeddedDocumentBinaryObject.set("mimeCode", "text/plain")
+            #     settings=frappe.get_doc('Zatca setting')
+            #     cac_AdditionalDocumentReference2 = ET.SubElement(invoice, "cac:AdditionalDocumentReference")
+            #     cbc_ID_1_1 = ET.SubElement(cac_AdditionalDocumentReference2, "cbc:ID")
+            #     cbc_ID_1_1.text = "PIH"
+            #     cac_Attachment = ET.SubElement(cac_AdditionalDocumentReference2, "cac:Attachment")
+            #     cbc_EmbeddedDocumentBinaryObject = ET.SubElement(cac_Attachment, "cbc:EmbeddedDocumentBinaryObject")
+            #     cbc_EmbeddedDocumentBinaryObject.set("mimeCode", "text/plain")
                 
-                settings = frappe.get_doc('Zatca setting')
-                company = settings.company
-                company_name = frappe.db.get_value("Company", company, "abbr")
-                pih_data_raw = settings.get("pih", "{}")
-                pih_data = json.loads(pih_data_raw)
-                pih = get_pih_for_company(pih_data, company_name)
+            #     settings = frappe.get_doc('Zatca setting')
+            #     company = settings.company
+            #     company_name = frappe.db.get_value("Company", company, "abbr")
+            #     pih_data_raw = settings.get("pih", "{}")
+            #     pih_data = json.loads(pih_data_raw)
+            #     pih = get_pih_for_company(pih_data, company_name)
                 
-                cbc_EmbeddedDocumentBinaryObject.text = pih
-                # cbc_EmbeddedDocumentBinaryObject.text = "L0Awl814W4ycuFvjDVL/vIW08mNRNAwqfdlF5i/3dpU="
-            # QR CODE ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                cac_AdditionalDocumentReference22 = ET.SubElement(invoice, "cac:AdditionalDocumentReference")
-                cbc_ID_1_12 = ET.SubElement(cac_AdditionalDocumentReference22, "cbc:ID")
-                cbc_ID_1_12.text = "QR"
-                cac_Attachment22 = ET.SubElement(cac_AdditionalDocumentReference22, "cac:Attachment")
-                cbc_EmbeddedDocumentBinaryObject22 = ET.SubElement(cac_Attachment22, "cbc:EmbeddedDocumentBinaryObject")
-                cbc_EmbeddedDocumentBinaryObject22.set("mimeCode", "text/plain")
-                cbc_EmbeddedDocumentBinaryObject22.text = "GsiuvGjvchjbFhibcDhjv1886G"
-            #END  QR CODE ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            #     cbc_EmbeddedDocumentBinaryObject.text = pih
+            #     # cbc_EmbeddedDocumentBinaryObject.text = "L0Awl814W4ycuFvjDVL/vIW08mNRNAwqfdlF5i/3dpU="
+            # # QR CODE ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            #     cac_AdditionalDocumentReference22 = ET.SubElement(invoice, "cac:AdditionalDocumentReference")
+            #     cbc_ID_1_12 = ET.SubElement(cac_AdditionalDocumentReference22, "cbc:ID")
+            #     cbc_ID_1_12.text = "QR"
+            #     cac_Attachment22 = ET.SubElement(cac_AdditionalDocumentReference22, "cac:Attachment")
+            #     cbc_EmbeddedDocumentBinaryObject22 = ET.SubElement(cac_Attachment22, "cbc:EmbeddedDocumentBinaryObject")
+            #     cbc_EmbeddedDocumentBinaryObject22.set("mimeCode", "text/plain")
+            #     cbc_EmbeddedDocumentBinaryObject22.text = "GsiuvGjvchjbFhibcDhjv1886G"
+            # #END  QR CODE ------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 cac_sign = ET.SubElement(invoice, "cac:Signature")
                 cbc_id_sign = ET.SubElement(cac_sign, "cbc:ID")
                 cbc_method_sign = ET.SubElement(cac_sign, "cbc:SignatureMethod")
