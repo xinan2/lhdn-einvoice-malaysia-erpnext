@@ -27,95 +27,8 @@ def xml_tags():
                 invoice = ET.Element("Invoice", xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" )
                 invoice.set("xmlns:cac", "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
                 invoice.set("xmlns:cbc", "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")
-                
-                # Add UBLVersionID
-                # ubl_version_id = ET.SubElement(invoice, "cbc:UBLVersionID")
-                # ubl_version_id.text = "2.1"
-               
-                #digital signature work
                 invoice.set("xmlns:ext", "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2")   
 
-               
-                # ubl_extensions = ET.SubElement(invoice, "ext:UBLExtensions")
-                # ubl_extension = ET.SubElement(ubl_extensions, "ext:UBLExtension")
-                # extension_uri = ET.SubElement(ubl_extension, "ext:ExtensionURI")
-                # extension_uri.text = "urn:oasis:names:specification:ubl:dsig:enveloped:xades"
-                # extension_content = ET.SubElement(ubl_extension, "ext:ExtensionContent")
-                # UBL_Document_Signatures = ET.SubElement(extension_content , "sig:UBLDocumentSignatures"    )
-                # UBL_Document_Signatures.set("xmlns:sac" , "urn:oasis:names:specification:ubl:schema:xsd:SignatureAggregateComponents-2")
-                # UBL_Document_Signatures.set("xmlns:sbc" , "urn:oasis:names:specification:ubl:schema:xsd:SignatureBasicComponents-2")
-                # UBL_Document_Signatures.set("xmlns:sig" , "urn:oasis:names:specification:ubl:schema:xsd:CommonSignatureComponents-2")
-                # Signature_Information = ET.SubElement(UBL_Document_Signatures , "sac:SignatureInformation"  )
-                # id = ET.SubElement(Signature_Information , "cbc:ID"  )
-                # id.text = "urn:oasis:names:specification:ubl:signature:1"
-                # Referenced_SignatureID = ET.SubElement(Signature_Information , "sbc:ReferencedSignatureID"  )
-                # Referenced_SignatureID.text = "urn:oasis:names:specification:ubl:signature:Invoice"
-                # Signature = ET.SubElement(Signature_Information , "ds:Signature"  )
-                # Signature.set("Id" , "signature" )
-                # Signature.set("xmlns:ds" , "http://www.w3.org/2000/09/xmldsig#" )
-                # Signed_Info = ET.SubElement(Signature , "ds:SignedInfo"  )
-                # Canonicalization_Method = ET.SubElement(Signed_Info , "ds:CanonicalizationMethod"  )
-                # Canonicalization_Method.set("Algorithm" , "http://www.w3.org/2006/12/xml-c14n11"  )
-                # Signature_Method = ET.SubElement(Signed_Info , "ds:SignatureMethod"  )
-                # Signature_Method.set("Algorithm" , "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"  )
-                # Reference = ET.SubElement(Signed_Info , "ds:Reference"  )
-                # Reference.set("Id"  , "id-doc-signed-data")
-                # Reference.set("URI"  , "")
-                # Transforms = ET.SubElement(Reference , "ds:Transforms" )
-                # Transform = ET.SubElement(Transforms , "ds:Transform" )
-                # Transform.set("Algorithm" , "http://www.w3.org/TR/1999/REC-xpath-19991116")
-                # XPath = ET.SubElement(Transform , "ds:XPath" )
-                # XPath.text = "not(//ancestor-or-self::ext:UBLExtensions)"
-                # Transform2 = ET.SubElement(Transforms , "ds:Transform" )
-                # Transform2.set("Algorithm" , "http://www.w3.org/TR/1999/REC-xpath-19991116")
-                # XPath2 = ET.SubElement(Transform2 , "ds:XPath" )
-                # XPath2.text = "not(//ancestor-or-self::cac:Signature)"
-                # # Transform3 = ET.SubElement(Transforms , "ds:Transform" )
-                # # Transform3.set("Algorithm" , "http://www.w3.org/TR/1999/REC-xpath-19991116")
-                # # XPath3 = ET.SubElement(Transform3 , "ds:XPath" )
-                # # XPath3.text = "not(//ancestor-or-self::cac:AdditionalDocumentReference[cbc:ID='QR'])"
-                # Transform4 = ET.SubElement(Transforms , "ds:Transform" )
-                # Transform4.set("Algorithm" , "http://www.w3.org/2006/12/xml-c14n11")
-                # Diges_Method = ET.SubElement(Reference , "ds:DigestMethod" )
-                # Diges_Method.set("Algorithm" , "http://www.w3.org/2001/04/xmlenc#sha256")
-                # Diges_value = ET.SubElement(Reference , "ds:DigestValue" )
-                # Diges_value.text = "O/vEnAxjLAlw8kQUy8nq/5n8IEZ0YeIyBFvdQA8+iFM="
-                # Reference2 = ET.SubElement(Signed_Info , "ds:Reference"  )
-                # Reference2.set("Type" , "http://www.w3.org/2000/09/xmldsig#SignatureProperties")
-                # # Reference2.set("URI" , "#xadesSignedProperties")
-                # Reference2.set("URI" , "#id-xades-signed-props")                
-                # Digest_Method1 = ET.SubElement(Reference2 , "ds:DigestMethod"  )
-                # Digest_Method1.set("Algorithm" , "http://www.w3.org/2001/04/xmlenc#sha256")
-                # Digest_value1 = ET.SubElement(Reference2 , "ds:DigestValue"  )
-                # Digest_value1.text="YjQwZmEyMjM2NDU1YjQwNjM5MTFmYmVkODc4NjM2NTc0N2E3OGFmZjVlMzA1ODAwYWE5Y2ZmYmFjZjRiNjQxNg=="
-                # Signature_Value = ET.SubElement(Signature , "ds:SignatureValue"  )
-                # Signature_Value.text = "MEQCIDGBRHiPo6yhXIQ9df6pMEkufcGnoqYaS+O8Jn0xagBiAiBtoxpbrwfEJHhUGQHTqzD1ORX5+Z/tumM0wLfZ4cuYRg=="
-                # KeyInfo = ET.SubElement(Signature , "ds:KeyInfo"  )
-                # X509Data = ET.SubElement(KeyInfo , "ds:X509Data"  )
-                # X509Certificate = ET.SubElement(X509Data , "ds:X509Certificate"  )
-                # X509Certificate.text = "MIID6TCCA5CgAwIBAgITbwAAf8tem6jngr16DwABAAB/yzAKBggqhkjOPQQDAjBjMRUwEwYKCZImiZPyLGQBGRYFbG9jYWwxEzARBgoJkiaJk/IsZAEZFgNnb3YxFzAVBgoJkiaJk/IsZAEZFgdleHRnYXp0MRwwGgYDVQQDExNUU1pFSU5WT0lDRS1TdWJDQS0xMB4XDTIyMDkxNDEzMjYwNFoXDTI0MDkxMzEzMjYwNFowTjELMAkGA1UEBhMCU0ExEzARBgNVBAoTCjMxMTExMTExMTExDDAKBgNVBAsTA1RTVDEcMBoGA1UEAxMTVFNULTMxMTExMTExMTEwMTExMzBWMBAGByqGSM49AgEGBSuBBAAKA0IABGGDDKDmhWAITDv7LXqLX2cmr6+qddUkpcLCvWs5rC2O29W/hS4ajAK4Qdnahym6MaijX75Cg3j4aao7ouYXJ9GjggI5MIICNTCBmgYDVR0RBIGSMIGPpIGMMIGJMTswOQYDVQQEDDIxLVRTVHwyLVRTVHwzLWE4NjZiMTQyLWFjOWMtNDI0MS1iZjhlLTdmNzg3YTI2MmNlMjEfMB0GCgmSJomT8ixkAQEMDzMxMTExMTExMTEwMTExMzENMAsGA1UEDAwEMTEwMDEMMAoGA1UEGgwDVFNUMQwwCgYDVQQPDANUU1QwHQYDVR0OBBYEFDuWYlOzWpFN3no1WtyNktQdrA8JMB8GA1UdIwQYMBaAFHZgjPsGoKxnVzWdz5qspyuZNbUvME4GA1UdHwRHMEUwQ6BBoD+GPWh0dHA6Ly90c3RjcmwuemF0Y2EuZ292LnNhL0NlcnRFbnJvbGwvVFNaRUlOVk9JQ0UtU3ViQ0EtMS5jcmwwga0GCCsGAQUFBwEBBIGgMIGdMG4GCCsGAQUFBzABhmJodHRwOi8vdHN0Y3JsLnphdGNhLmdvdi5zYS9DZXJ0RW5yb2xsL1RTWkVpbnZvaWNlU0NBMS5leHRnYXp0Lmdvdi5sb2NhbF9UU1pFSU5WT0lDRS1TdWJDQS0xKDEpLmNydDArBggrBgEFBQcwAYYfaHR0cDovL3RzdGNybC56YXRjYS5nb3Yuc2Evb2NzcDAOBgNVHQ8BAf8EBAMCB4AwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMDMCcGCSsGAQQBgjcVCgQaMBgwCgYIKwYBBQUHAwIwCgYIKwYBBQUHAwMwCgYIKoZIzj0EAwIDRwAwRAIgOgjNPJW017lsIijmVQVkP7GzFO2KQKd9GHaukLgIWFsCIFJF9uwKhTMxDjWbN+1awsnFI7RLBRxA/6hZ+F1wtaqU"
-                # Object = ET.SubElement(Signature , "ds:Object"  )
-                # QualifyingProperties = ET.SubElement(Object , "xades:QualifyingProperties"  )
-                # QualifyingProperties.set("Target" , "signature")
-                # QualifyingProperties.set("xmlns:xades" , "http://uri.etsi.org/01903/v1.3.2#")
-                # SignedProperties = ET.SubElement(QualifyingProperties , "xades:SignedProperties"  )
-                # # SignedProperties.set("Id" , "xadesSignedProperties") id-xades-signed-props
-                # SignedProperties.set("Id" , "id-xades-signed-props") 
-                # SignedSignatureProperties = ET.SubElement(SignedProperties , "xades:SignedSignatureProperties"  )
-                # SigningTime = ET.SubElement(SignedSignatureProperties , "xades:SigningTime"  )
-                # SigningTime.text = "2024-01-24T11:36:34Z"
-                # SigningCertificate = ET.SubElement(SignedSignatureProperties , "xades:SigningCertificate"  )
-                # Cert = ET.SubElement(SigningCertificate , "xades:Cert"  )
-                # CertDigest = ET.SubElement(Cert , "xades:CertDigest"  )
-                # Digest_Method2 = ET.SubElement(CertDigest , "ds:DigestMethod"  )
-                # Digest_Value2 = ET.SubElement(CertDigest , "ds:DigestValue"  )
-                # Digest_Method2.set("Algorithm" , "http://www.w3.org/2001/04/xmlenc#sha256")
-                # Digest_Value2.text = "YTJkM2JhYTcwZTBhZTAxOGYwODMyNzY3NTdkZDM3YzhjY2IxOTIyZDZhM2RlZGJiMGY0NDUzZWJhYWI4MDhmYg=="
-                # IssuerSerial = ET.SubElement(Cert , "xades:IssuerSerial"  )
-                # X509IssuerName = ET.SubElement(IssuerSerial , "ds:X509IssuerName"  )
-                # X509SerialNumber = ET.SubElement(IssuerSerial , "ds:X509SerialNumber"  )
-                # X509IssuerName.text = "CN=TSZEINVOICE-SubCA-1, DC=extgazt, DC=gov, DC=local"
-                # X509SerialNumber.text = "2475382886904809774818644480820936050208702411"
                 return invoice
             except Exception as e:
                     frappe.throw("error in xml tags formation:  "+ str(e) )
@@ -127,19 +40,12 @@ def salesinvoice_data(invoice,invoice_number):
             try:
                 print("enter in salesinvoicedata")
                 sales_invoice_doc = frappe.get_doc('Sales Invoice' ,invoice_number)
-                # cbc_ProfileID = ET.SubElement(invoice, "cbc:ProfileID")
-                # cbc_ProfileID.text = "reporting:1.0"
                 
                 cbc_ID = ET.SubElement(invoice, "cbc:ID")   #initialize
                 cbc_ID.text = str(sales_invoice_doc.name)  # assign
 
-                # cbc_UUID = ET.SubElement(invoice, "cbc:UUID")
-                # cbc_UUID.text =  str(uuid.uuid1())
-                # uuid1= cbc_UUID.text
-                # cbc_InvoiceTypeCode = ET.SubElement(invoice, "cbc:InvoiceTypeCode")
-                # cbc_InvoiceTypeCode.set("listVersionID", "1.0")  # Current e-Invoice version
 
-                 # Get the current date and time in UTC
+                # Get the current date and time in UTC
                 now_utc = datetime.now(timezone.utc)
                 issue_date = now_utc.date()
                 issue_time = now_utc.time().replace(microsecond=0)  # Remove microseconds for cleaner output
@@ -147,7 +53,6 @@ def salesinvoice_data(invoice,invoice_number):
 
                 cbc_IssueDate = ET.SubElement(invoice, "cbc:IssueDate")
                 cbc_IssueDate.text = str(issue_date)  #Erp sales invoice  posting_date
-
                 # cbc_IssueDate.text = str(sales_invoice_doc.posting_date)  #Erp sales invoice  posting_date
                 print("issue date ",cbc_IssueDate.text)
                 # cbc_IssueDate.text = "2024-10-06"
@@ -184,12 +89,6 @@ def company_Data(invoice,sales_invoice_doc): #supplier data
                     frappe.throw("LHDN requires proper address. Please add your company address in address master")
 
             
-                # Fetch linked addresses from the Dynamic Link table
-                # linked_addresses = frappe.get_all("Dynamic Link", 
-                #                                 filters={"link_name": sales_invoice_doc.company, "link_doctype": "Company"},
-                #                                 fields=["parent"])
-
-                # customer_doc= frappe.get_doc("Customer",sales_invoice_doc.customer)
                 
                 #Supplier
                 cac_AccountingSupplierParty = ET.SubElement(invoice, "cac:AccountingSupplierParty")
@@ -197,26 +96,20 @@ def company_Data(invoice,sales_invoice_doc): #supplier data
 
 
                 # Supplier’s Malaysia Standard Industrial Classification (MSIC) Code
-                #/ ubl:Invoice / cac:AccountingSupplierParty / cac:Party / cbc:IndustryClassificationCode
                 cbc_IndustryClassificationCode = ET.SubElement(cac_Party_1, "cbc:IndustryClassificationCode")
                 cbc_IndustryClassificationCode.text = company_doc.custom_msic_codes
                 cbc_IndustryClassificationCode.set("name", company_doc.custom_misc_description)
 
 
                 # Supplier’s TIN
-                #/ ubl:Invoice / cac:AccountingSupplierParty / cac:Party / cac:PartyIdentification / cbc:ID [@schemeID=’TIN’]
                 cac_PartyIdentification = ET.SubElement(cac_Party_1, "cac:PartyIdentification")
                 cbc_ID_2 = ET.SubElement(cac_PartyIdentification, "cbc:ID")
                 cbc_ID_2.set("schemeID", "TIN")
                 cbc_ID_2.text = str(company_doc.tax_id )
                 
-                # cbc_ID_2.text = "C10806521090"
-                # print("supplier ",str(company_doc.tax_id ))
-                # print("supplier TIn",cbc_ID_2.text)
 
 
                 #BRN    
-                # Supplier’s Registration / Identification Number / Passport Number
                 supplier_id_type = company_doc.custom_registration_type  # Example field to determine the type of ID
                 supplier_id_number = company_doc.company_registration  # Example field for the ID number
                 cac_PartyIdentification_1 = ET.SubElement(cac_Party_1, "cac:PartyIdentification")
@@ -232,21 +125,8 @@ def company_Data(invoice,sales_invoice_doc): #supplier data
                 # cbc_ID_Identification.text = str(supplier_id_number)  #temporary commenting
                 cbc_ID_Identification.text = "199701002338"
 
-                
-                # cbc_ID_Identification.text = "417834-X"
-                # print("supplier",str(supplier_id_number))
-                # print("supplier BRN",cbc_ID_Identification.text)
-   
-
-                # Supplier’s Registration / Identification Number / Passport Number
-                # Assuming it's stored in a field named company_registration
-                # cbc_ID_2.set("schemeID", "BRN")  # Update accordingly if needed
-                # cbc_ID_2.text = company_doc.company_registration
-
-
-
+        
                 # Supplier’s SST Registration Number
-                #/ ubl:Invoice / cac:AccountingSupplierParty / cac:Party / cac:PartyIdentification / cbc:ID [@schemeID=’SST’]
                 if company_doc.custom_sst_registration_no:
                     cac_PartyIdentification_3 = ET.SubElement(cac_Party_1, "cac:PartyIdentification")
                     cbc_ID_SST = ET.SubElement(cac_PartyIdentification_3, "cbc:ID")
@@ -259,7 +139,6 @@ def company_Data(invoice,sales_invoice_doc): #supplier data
                     cbc_ID_SST.text = "NA"
 
                 # Supplier’s Tourism Tax Registration Number
-                #/ ubl:Invoice / cac:AccountingSupplierParty / cac:Party / cac:PartyIdentification / cbc:ID [@schemeID=’TTX’]
                 if company_doc.custom_tourism_tax_registration:
                     cac_PartyIdentification_4 = ET.SubElement(cac_Party_1, "cac:PartyIdentification")
                     cbc_ID_TTX = ET.SubElement(cac_PartyIdentification_4, "cbc:ID")
@@ -273,14 +152,12 @@ def company_Data(invoice,sales_invoice_doc): #supplier data
 
 
 
-                                # Supplier’s Address
-                #. / cac:Party / cac:PostalAddress / cac:AddressLine / cbc:Line
+                # Supplier’s Address
                 for address in address_list:
                     cac_PostalAddress = ET.SubElement(cac_Party_1, "cac:PostalAddress")
 
                     print("address",address)
 
-                    #. / cac:Party / cac:PostalAddress / cbc:CityName
                     cbc_CityName = ET.SubElement(cac_PostalAddress, "cbc:CityName")
                     cbc_CityName.text = address.city 
                     print("City",cbc_CityName.text)
@@ -293,7 +170,6 @@ def company_Data(invoice,sales_invoice_doc): #supplier data
 
 
 
-                    # cac:Party / cac:PostalAddress / cbc:CountrySubentityCode
                     cbc_CountrySubentity = ET.SubElement(cac_PostalAddress, "cbc:CountrySubentityCode")
                     cbc_CountrySubentity.text = address.custom_state_codes 
                     # cbc_CountrySubentity.text = "14"
@@ -315,13 +191,11 @@ def company_Data(invoice,sales_invoice_doc): #supplier data
                     break
                     
                     
-                # / cac:Party / cac:PostalAddress / cac:Country / cbc:IdentificationCode [@listID=’ISO3166-1’] [@listAgencyID=’6’]
                 cac_Country = ET.SubElement(cac_PostalAddress, "cac:Country")
                 cbc_IdentificationCode = ET.SubElement(cac_Country, "cbc:IdentificationCode", {
                     "listID": "ISO3166-1",
                     "listAgencyID": "6"
                 })
-                # cbc_IdentificationCode = ET.SubElement(cac_Country, "cbc:IdentificationCode")
                 cbc_IdentificationCode.text = address.custom_country_code if address.custom_country_code else "MYS"
 
 
@@ -329,29 +203,10 @@ def company_Data(invoice,sales_invoice_doc): #supplier data
 
 
                 # Supplier’s Name
-                #/ ubl:Invoice / cac:AccountingSupplierParty / cac:Party / cac:PartyLegalEntity / cbc:RegistrationName
-
                 cac_PartyLegalEntity = ET.SubElement(cac_Party_1, "cac:PartyLegalEntity")
                 cbc_RegistrationName = ET.SubElement(cac_PartyLegalEntity, "cbc:RegistrationName")
                 cbc_RegistrationName.text = sales_invoice_doc.company
 
-
-               
-
-
-                # The mapping for this field will depend on the field type which can be one of the following options:
-
-                # / ubl:Invoice / cac:AccountingSupplierParty / cac:Party / cac:PartyIdentification / cbc:ID [@schemeID=’NRIC’]
-                # OR
-                # / ubl:Invoice / cac:AccountingSupplierParty / cac:Party / cac:PartyIdentification / cbc:ID [@schemeID=’BRN’]
-                # OR
-                # / ubl:Invoice / cac:AccountingSupplierParty / cac:Party / cac:PartyIdentification / cbc:ID [@schemeID=’PASSPORT’]
-                # OR
-                # / ubl:Invoice / cac:AccountingSupplierParty / cac:Party / cac:PartyIdentification / cbc:ID [@schemeID=’ARMY’]
-
-
-                
-                
                 # Supplier’s Contact Number
                 
                 cac_Contact = ET.SubElement(cac_Party_1, "cac:Contact")
@@ -363,12 +218,7 @@ def company_Data(invoice,sales_invoice_doc): #supplier data
                     cac_Contact = ET.SubElement(cac_Party_1, "cac:Contact")
                     cbc_ElectronicMail = ET.SubElement(cac_Contact, "cbc:ElectronicMail")
                     cbc_ElectronicMail.text = company_doc.email
-                
-                
-
-    
-               
-
+                   
 
                
 
@@ -415,11 +265,7 @@ def customer_Data(invoice,sales_invoice_doc):
                 elif customer_id_type == 'ARMY':
                     cbc_ID_Identification.set("schemeID", "ARMY")             
                 cbc_ID_Identification.text = customer_id_number
-                #199201002549
-                # cbc_ID_Identification.text = "201901234567" #dynamic
 
-                # Customer’s SST Registration Number
-                #/ ubl:Invoice / cac:AccountingCustomerParty / cac:Party / cac:PartyIdentification / cbc:ID [@schemeID=’SST’]
                 if customer_doc.custom_sst_registration_no:
                     cac_PartyIdentification_3 = ET.SubElement(cac_Party_2, "cac:PartyIdentification")
                     cbc_ID_SST = ET.SubElement(cac_PartyIdentification_3, "cbc:ID")
@@ -431,18 +277,7 @@ def customer_Data(invoice,sales_invoice_doc):
                     cbc_ID_SST_1.set("schemeID", "SST")
                     cbc_ID_SST_1.text = "NA"
         
-                # Customer's Registration / Identification Number / Passport Number 
-                #/ ubl:Invoice / cac:AccountingCustomerParty / cac:Party / cac:PartyIdentification / cbc:ID [@schemeID=’NRIC’]
-                # OR
-                # / ubl:Invoice / cac:AccountingCustomerParty / cac:Party / cac:PartyIdentification / cbc:ID [@schemeID=’BRN’]
-                # OR
-                # / ubl:Invoice / cac:AccountingCustomerParty / cac:Party / cac:PartyIdentification / cbc:ID [@schemeID=’PASSPORT’]
-                # OR
-                # / ubl:Invoice / cac:AccountingCustomerParty / cac:Party / cac:PartyIdentification / cbc:ID [@schemeID=’ARMY’]
-                
-             
-               
-
+                                   
                 #Buyer's Address
                 if int(frappe.__version__.split('.')[0]) == 13:
                     address = frappe.get_doc("Address", sales_invoice_doc.customer_address)    #check
@@ -463,9 +298,6 @@ def customer_Data(invoice,sales_invoice_doc):
                 cbc_CountrySubentity = ET.SubElement(cac_PostalAddress, "cbc:CountrySubentityCode")
                 # cbc_CountrySubentity.text = "14"
                 cbc_CountrySubentity.text = address.custom_state_codes 
-
-
-
 
 
                 cac_AddressLine_0 = ET.SubElement(cac_PostalAddress, "cac:AddressLine")
@@ -503,7 +335,6 @@ def customer_Data(invoice,sales_invoice_doc):
                 cac_Contact = ET.SubElement(cac_Party_2, "cac:Contact")
                 cbc_Telephone = ET.SubElement(cac_Contact, "cbc:Telephone")
                 cbc_Telephone.text = "+922222222234"  #dynamic
-
                 # cbc_Telephone.text = customer_doc.mobile_no
 
                 
@@ -521,25 +352,8 @@ def customer_Data(invoice,sales_invoice_doc):
 
 def invoice_Typecode_Compliance(invoice,compliance_type):
 
-                    # 01 	Invoice
-                    # 02 	Credit Note
-                    # 03 	Debit Note
-                    # 04 	Refund Note
-                    # 11 	Self-billed Invoice
-                    # 12 	Self-billed Credit Note
-                    # 13 	Self-billed Debit Note
-                    # 14 	Self-billed Refund Note
+                
             try:                         
-                # cbc_InvoiceTypeCode.set("listVersionID", "1.0")  # Current e-Invoice version
-
-                # cbc_InvoiceTypeCode.set("name", "0200000")
-                # cbc_InvoiceTypeCode.text = "388"
-                # return invoice
-
-
-
-                print("list code")
-        
 
                 cbc_InvoiceTypeCode = ET.SubElement(invoice, "cbc:InvoiceTypeCode")
                 cbc_InvoiceTypeCode.set("listVersionID", "1.1")  # Current e-Invoice version

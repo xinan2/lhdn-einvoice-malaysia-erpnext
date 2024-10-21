@@ -29,11 +29,6 @@ from cryptography.hazmat.primitives import serialization
 # import asn1
 
 
-# frappe.init(site="prod.erpgulf.com")
-# frappe.connect()
-# from myinvois.myinvois.compliance import get_pwd,set_cert_path,create_compliance_x509,check_compliance
-
-
 from frappe.utils import now
 import re
 import xml.dom.minidom as minidom
@@ -89,9 +84,10 @@ def gen_qrcode(text):
     return f'data:image/png;base64,{data.png_as_base64_str(scale=2)}'
 
 
-def sign_document_digest(encoded_hash):
 
-        
+
+def sign_document_digest(encoded_hash):
+  
 
 
     # Step 4
@@ -101,7 +97,7 @@ def sign_document_digest(encoded_hash):
 
     # Path to the .p12 file
     p12_file_path = os.path.join(current_path, "test.p12")  # include your softcert here
-    p12_password = b"My8}XPyP"  # include your softcert password here (note: use byte string)
+    p12_password = b"test"  # include your softcert password here (note: use byte string)
 
     # Check if the file exists and is readable
     if not os.path.exists(p12_file_path):
@@ -322,113 +318,14 @@ def signed_properties_hash():
         raise Exception("Error in generating signed properties hash: " + str(e))
 
 
-#############################33testing#3
-import hashlib
-import base64
-from lxml import etree
-
-import hashlib
-import base64
-from lxml import etree
-
-# def signed_properties_hash():
-#     """
-#     Generates the PropsDigest by extracting the SignedProperties tag from the XML file
-#     located at /private/files/after_step_4.xml, canonicalizing it, hashing it using SHA-256,
-#     and encoding it in Base64.
-    
-#     :return: Base64 encoded hash of the SignedProperties.
-#     """
-    
-#     # Define the fixed file path
-# # Define the file path relative to the site directory
-#     file_path = frappe.get_site_path('private', 'files', 'after_step_4.xml')
-        
-#     # Namespaces used in the XML for XPath lookup
-#     namespaces = {
-#     'ext': 'urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2',
-#     'sig': 'urn:oasis:names:specification:ubl:schema:xsd:SignatureBasicComponents-2',
-#     'sac': 'http://www.w3.org/2000/09/xmldsig#',
-#     'ds': 'http://www.w3.org/2000/09/xmldsig#',
-#     'xades': 'http://uri.etsi.org/01903/v1.3.2#'
-# }
-    
-
-#     try:
-#         # Load the XML file from the fixed file path
-#         with open(file_path, 'rb') as f:
-#             xml_content = f.read()
-#             print("xml_content",xml_content)
-
-#         # Parse the XML content using lxml
-#         root = etree.fromstring(xml_content)
-#     except Exception as e:
-#         raise ValueError(f"Error reading or parsing XML file: {str(e)}")
-    
-
-#     ubl_extensions = root.xpath('/Invoice/ext:UBLExtensions', namespaces=namespaces)
-#     ubl_extension = root.xpath('/Invoice/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent', namespaces=namespaces)
-
-#     # Extract the SignedProperties tag using XPath
-#     signed_properties = root.xpath(
-#         '/Invoice/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/sig:UBLDocumentSignatures/sig:SignatureInformation/ds:Signature/ds:Object/xades:QualifyingProperties/xades:SignedProperties',namespaces=namespaces
-#     )
-    
-#     if not signed_properties:
-#         raise ValueError("SignedProperties tag not found in the XML.")
-    
-#     # Convert the SignedProperties element to a string (linearize and canonicalize)
-#     signed_properties_str = etree.tostring(signed_properties[0], method='c14n', exclusive=True, with_comments=False)
-    
-#     # Hash the canonicalized SignedProperties string using SHA-256
-#     sha256_hash = hashlib.sha256(signed_properties_str).digest()
-#     print("sha256_hash",sha256_hash)
-    
-#     # Encode the hashed value using Base64
-#     props_digest = base64.b64encode(sha256_hash).decode('utf-8')
-#     print("props_digest",props_digest)
-    
-#     return props_digest
-
-
-# # Example usage: Call the function to generate the PropsDigest
-# props_digest_value = generate_signed_properties_hash()
-# print(f"PropsDigest: {props_digest_value}")
-
-
-
-
-
 ##########  original#############
-
-
-
 def generate_Signed_Properties_Hash(signing_time,issuer_name,serial_number,certificate_hash_base64):
             try:
                 print("signing_time",signing_time)
                 print("certificate_hash",certificate_hash_base64)
                 print("issuer_name",issuer_name)
                 print("serial_number",serial_number)
-               
-
-                # xml_string = '''<xades:SignedProperties Id="id-xades-signed-props">
-                #                     <xades:SignedSignatureProperties>
-                #                         <xades:SigningTime>{signing_time}</xades:SigningTime>
-                #                         <xades:SigningCertificate>
-                #                             <xades:Cert>
-                #                                 <xades:CertDigest>
-                #                                     <ds:DigestMethod xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
-                #                                     <ds:DigestValue xmlns:ds="http://www.w3.org/2000/09/xmldsig#">{certificate_hash}</ds:DigestValue>
-                #                                 </xades:CertDigest>
-                #                                 <xades:IssuerSerial>
-                #                                     <ds:X509IssuerName xmlns:ds="http://www.w3.org/2000/09/xmldsig#">{issuer_name}</ds:X509IssuerName>
-                #                                     <ds:X509SerialNumber xmlns:ds="http://www.w3.org/2000/09/xmldsig#">{serial_number}</ds:X509SerialNumber>
-                #                                 </xades:IssuerSerial>
-                #                             </xades:Cert>
-                #                         </xades:SigningCertificate>
-                #                     </xades:SignedSignatureProperties>
-                #                 </xades:SignedProperties>'''
-                
+                               
                 xml_string = '''<xades:SignedProperties Id="id-xades-signed-props" xmlns:xades="http://uri.etsi.org/01903/v1.3.2#">
                                     <xades:SignedSignatureProperties>
                                         <xades:SigningTime>{signing_time}</xades:SigningTime>
@@ -698,11 +595,11 @@ def certificate_data():
 
         # Path to the .p12 file
         p12_file_path = os.path.join(current_path, "test.p12")  # include your softcert here
-        p12_password = b"My8}XPyP"  # include your softcert password here (note: use byte string)
+        p12_password = b"test"  # include your softcert password here (note: use byte string)
 
         pfx_path = p12_file_path
         
-        pfx_password = "My8}XPyP"
+        pfx_password = "test"
         pem_output_path = frappe.local.site + "/private/files/certificate.pem"
         pem_encryption_password = pfx_password.encode()   
         with open(pfx_path, "rb") as f:
@@ -758,7 +655,7 @@ def sign_data(line_xml):
         print("cert:",cert.issuer)
         # settings = frappe.get_doc('LHDN Malaysia Setting')
         # pass_file=settings.pfx_cert_password
-        pass_file = "My8}XPyP"
+        pass_file = "test"
         private_key = serialization.load_pem_private_key(
             cert_pem.encode(),
             password=pass_file.encode(),
