@@ -85,9 +85,54 @@ def gen_qrcode(text):
 
 
 
+@frappe.whitelist()
+def lhdn_Cancel_Background(uuid, invoice_number, reason="Document cancel"):
+    try:
+        sale_doc = frappe.get_doc("Sales Invoice", invoice_number)
+        company_name = sale_doc.company
+
+        # Call method to get access token
+        token = get_access_token(company_name)
+
+        headers = {
+            'accept': 'application/json',
+            'Accept-Language': 'en',
+            'X-Rate-Limit-Limit': '1000',
+            'Authorization': f"Bearer {token}",
+            'Content-Type': 'application/json'
+        }
+
+        # Get API version and form URL for cancellation
+        invoice_version = get_invoice_version()
+        cancel_api_url = get_API_url(base_url=f"/api/{invoice_version}/documents/state/{uuid}/state")
+
+        # Prepare payload for cancel request
+        payload = {
+            "status": "cancelled",
+            "reason": reason
+        }
+
+        # Send PUT request to cancel document with payload
+        cancel_response = requests.put(cancel_api_url, headers=headers, json=payload)
+        response_text = cancel_response.text
+
+        # Check response status
+        if cancel_response.status_code == 200:
+            response_data = cancel_response.json()
+            doc_status = response_data.get("status")
+            sale_doc.db_set("custom_lhdn_status", doc_status)
+            frappe.msgprint(f"Document canceled successfully.<br>Status: {doc_status}<br>Response: {response_text}")
+        else:
+            frappe.msgprint(f"Failed to cancel document.<br>Status Code: {cancel_response.status_code}<br>Response: {response_text}")
+    
+    except Exception as e:
+        frappe.log_error(frappe.get_traceback(), ("Error in Cancel Document API"))
+        frappe.throw(("An error occurred while canceling the document: ") + str(e))
+
+
+
 
 def sign_document_digest(encoded_hash):
-  
 
 
     # Step 4
@@ -97,7 +142,7 @@ def sign_document_digest(encoded_hash):
 
     # Path to the .p12 file
     p12_file_path = os.path.join(current_path, "test.p12")  # include your softcert here
-    p12_password = b"test"  # include your softcert password here (note: use byte string)
+    p12_password = b"My8}XPyP"  # include your softcert password here (note: use byte string)
 
     # Check if the file exists and is readable
     if not os.path.exists(p12_file_path):
@@ -595,11 +640,11 @@ def certificate_data():
 
         # Path to the .p12 file
         p12_file_path = os.path.join(current_path, "test.p12")  # include your softcert here
-        p12_password = b"test"  # include your softcert password here (note: use byte string)
+        p12_password = b"My8}XPyP"  # include your softcert password here (note: use byte string)
 
         pfx_path = p12_file_path
         
-        pfx_password = "test"
+        pfx_password = "My8}XPyP"
         pem_output_path = frappe.local.site + "/private/files/certificate.pem"
         pem_encryption_password = pfx_password.encode()   
         with open(pfx_path, "rb") as f:
@@ -655,7 +700,7 @@ def sign_data(line_xml):
         print("cert:",cert.issuer)
         # settings = frappe.get_doc('LHDN Malaysia Setting')
         # pass_file=settings.pfx_cert_password
-        pass_file = "test"
+        pass_file = "My8}XPyP"
         private_key = serialization.load_pem_private_key(
             cert_pem.encode(),
             password=pass_file.encode(),
