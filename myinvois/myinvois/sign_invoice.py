@@ -142,7 +142,7 @@ def sign_document_digest(encoded_hash):
 
     # Path to the .p12 file
     p12_file_path = os.path.join(current_path, "test.p12")  # include your softcert here
-    p12_password = b"My8}XPyP"  # include your softcert password here (note: use byte string)
+    p12_password = b"test"  # include your softcert password here (note: use byte string)
 
     # Check if the file exists and is readable
     if not os.path.exists(p12_file_path):
@@ -640,11 +640,11 @@ def certificate_data():
 
         # Path to the .p12 file
         p12_file_path = os.path.join(current_path, "test.p12")  # include your softcert here
-        p12_password = b"My8}XPyP"  # include your softcert password here (note: use byte string)
+        p12_password = b"test"  # include your softcert password here (note: use byte string)
 
         pfx_path = p12_file_path
         
-        pfx_password = "My8}XPyP"
+        pfx_password = "test"
         pem_output_path = frappe.local.site + "/private/files/certificate.pem"
         pem_encryption_password = pfx_password.encode()   
         with open(pfx_path, "rb") as f:
@@ -700,7 +700,7 @@ def sign_data(line_xml):
         print("cert:",cert.issuer)
         # settings = frappe.get_doc('LHDN Malaysia Setting')
         # pass_file=settings.pfx_cert_password
-        pass_file = "My8}XPyP"
+        pass_file = "test"
         private_key = serialization.load_pem_private_key(
             cert_pem.encode(),
             password=pass_file.encode(),
