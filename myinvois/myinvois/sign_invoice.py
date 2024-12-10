@@ -141,8 +141,8 @@ def sign_document_digest(encoded_hash):
     current_path = os.path.dirname(__file__)
 
     # Path to the .p12 file
-    p12_file_path = os.path.join(current_path, "test.p12")  # include your softcert here
-    p12_password = b"test"  # include your softcert password here (note: use byte string)
+    p12_file_path = os.path.join(current_path, "CERT_18893127.p12")  # include your softcert here
+    p12_password = b"7zDDQFYRDr"  # include your softcert password here (note: use byte string)
 
     # Check if the file exists and is readable
     if not os.path.exists(p12_file_path):
@@ -639,12 +639,12 @@ def certificate_data():
         current_path = os.path.dirname(__file__)
 
         # Path to the .p12 file
-        p12_file_path = os.path.join(current_path, "test.p12")  # include your softcert here
-        p12_password = b"test"  # include your softcert password here (note: use byte string)
+        p12_file_path = os.path.join(current_path, "CERT_18893127.p12")  # include your softcert here
+        p12_password = b"7zDDQFYRDr"  # include your softcert password here (note: use byte string)
 
         pfx_path = p12_file_path
         
-        pfx_password = "test"
+        pfx_password = "7zDDQFYRDr"
         pem_output_path = frappe.local.site + "/private/files/certificate.pem"
         pem_encryption_password = pfx_password.encode()   
         with open(pfx_path, "rb") as f:
@@ -700,7 +700,7 @@ def sign_data(line_xml):
         print("cert:",cert.issuer)
         # settings = frappe.get_doc('LHDN Malaysia Setting')
         # pass_file=settings.pfx_cert_password
-        pass_file = "test"
+        pass_file = "7zDDQFYRDr"
         private_key = serialization.load_pem_private_key(
             cert_pem.encode(),
             password=pass_file.encode(),
@@ -958,6 +958,7 @@ def get_invoice_version():
     return invoice_version
 
 
+
 @frappe.whitelist()     
 def refresh_doc_status(uuid,invoice_number):
     try:
@@ -1016,10 +1017,23 @@ def refresh_doc_status(uuid,invoice_number):
                     frappe.throw("ERROR in clearance invoice ,lhdn validation:  " + str(e) )
 
 def remove_api_from_url(url):
-    parsed_url = urlparse(url)
-    new_netloc = parsed_url.netloc.replace('-api', '')
-    new_url = urlunparse(parsed_url._replace(netloc=new_netloc))
-    return new_url
+    settings =  frappe.get_doc('Lhdn Settings')
+    api_environment = settings.select
+    
+    if api_environment == "Sandbox":
+        parsed_url = urlparse(url)
+        new_netloc = parsed_url.netloc.replace('-api', '')
+        new_url = urlunparse(parsed_url._replace(netloc=new_netloc))
+        return new_url
+    
+    if api_environment == "Production":
+        parsed_url = urlparse(url)
+        new_netloc = parsed_url.netloc.replace('api.', '')
+        new_url = urlunparse(parsed_url._replace(netloc=new_netloc))
+        return new_url
+
+        
+
 def compliance_api_call(invoice_number):
                 try:
                     
@@ -1342,7 +1356,7 @@ def myinvois_Call(invoice_number, compliance_type):
             else:
                 invoice = invoice_Typecode_Standard(invoice, sales_invoice_doc)
         else:  # if it is a compliance test
-            # print ("compiance type check")
+            print ("compiance type check")
             compliance_type = "1"
             invoice = invoice_Typecode_Compliance(invoice, compliance_type)
             # print("enter in else", ET.tostring(invoice, encoding='unicode'))

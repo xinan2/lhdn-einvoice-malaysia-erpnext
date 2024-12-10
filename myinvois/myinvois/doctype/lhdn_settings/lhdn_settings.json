@@ -11,7 +11,9 @@
   "select",
   "invoice_version",
   "sandbox_url",
-  "production_url"
+  "production_url",
+  "enable_digital_signature",
+  "certificate_password"
  ],
  "fields": [
   {
@@ -53,12 +55,23 @@
    "fieldtype": "Select",
    "label": "Invoice Version",
    "options": "v1.0\nv1.1"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_digital_signature",
+   "fieldtype": "Check",
+   "label": "Enable Digital Signature "
+  },
+  {
+   "fieldname": "certificate_password",
+   "fieldtype": "Password",
+   "label": "Certificate Password"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-07-17 19:52:42.180670",
+ "modified": "2024-12-10 02:02:24.137301",
  "modified_by": "Administrator",
  "module": "myinvois",
  "name": "Lhdn Settings",

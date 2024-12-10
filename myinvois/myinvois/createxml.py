@@ -2,21 +2,20 @@
 
 import frappe
 import os
-# frappe.init(site="prod.erpgulf.com")
-# frappe.connect()
 import xml.etree.ElementTree as ET
 from lxml import etree
 import xml.dom.minidom as minidom
 import uuid 
 from frappe.utils import now
 import re
-from lxml import etree
 from frappe.utils.data import  get_time
 from datetime import datetime, timezone
 import xml.etree.ElementTree as ET
 import json
 import xml.etree.ElementTree as ElementTree
 from datetime import datetime, timedelta
+
+
 
 
 
@@ -122,8 +121,8 @@ def company_Data(invoice,sales_invoice_doc): #supplier data
                     cbc_ID_Identification.set("schemeID", "PASSPORT")
                 elif supplier_id_type == 'ARMY':
                     cbc_ID_Identification.set("schemeID", "ARMY")
-                # cbc_ID_Identification.text = str(supplier_id_number)  #temporary commenting
-                cbc_ID_Identification.text = "199701002338"
+                cbc_ID_Identification.text = str(supplier_id_number)  #temporary commenting
+                # cbc_ID_Identification.text = "199701002338"
 
         
                 # Supplier’s SST Registration Number
@@ -349,14 +348,27 @@ def customer_Data(invoice,sales_invoice_doc):
                     frappe.throw("error occured in customer data"+ str(e) )
 
 
+def get_invoice_version():
+    settings =  frappe.get_doc('Lhdn Settings')
+    invoice_doc_version = settings.enable_digital_signature
+    return invoice_doc_version
 
 def invoice_Typecode_Compliance(invoice,compliance_type):
 
                 
-            try:                         
-
+            try:
+                                         
+                invoice_doc_version = get_invoice_version()  #checking from lhdn setting doctype
                 cbc_InvoiceTypeCode = ET.SubElement(invoice, "cbc:InvoiceTypeCode")
-                cbc_InvoiceTypeCode.set("listVersionID", "1.1")  # Current e-Invoice version
+                
+                if invoice_doc_version == 1:
+                    print("Version cehcking",invoice_doc_version)
+                    cbc_InvoiceTypeCode.set("listVersionID", "1.1")  # Current e-Invoice version
+                
+                if invoice_doc_version == 0:
+                    print("Version cehcking",invoice_doc_version)
+                    cbc_InvoiceTypeCode.set("listVersionID", "1.0")  # Current e-Invoice version
+
 
 
                 if compliance_type == "1":  # Invoice
