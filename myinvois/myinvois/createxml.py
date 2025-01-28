@@ -214,7 +214,7 @@ def company_Data(invoice,sales_invoice_doc): #supplier data
 
                 # Supplier’s e-mail
                 if company_doc.email:
-                    cac_Contact = ET.SubElement(cac_Party_1, "cac:Contact")
+                    # cac_Contact = ET.SubElement(cac_Party_1, "cac:Contact")
                     cbc_ElectronicMail = ET.SubElement(cac_Contact, "cbc:ElectronicMail")
                     cbc_ElectronicMail.text = company_doc.email
                    
@@ -333,12 +333,14 @@ def customer_Data(invoice,sales_invoice_doc):
                 print("customer contact")
                 cac_Contact = ET.SubElement(cac_Party_2, "cac:Contact")
                 cbc_Telephone = ET.SubElement(cac_Contact, "cbc:Telephone")
-                cbc_Telephone.text = "+922222222234"  #dynamic
+                # cbc_Telephone.text = "+922222222234"  #dynamic
                 # cbc_Telephone.text = customer_doc.mobile_no
+                cbc_Telephone.text = address.phone
+
 
                 
                 if customer_doc.custom_email_address:
-                    cac_Contact = ET.SubElement(cac_Party_2, "cac:Contact")
+                    # cac_Contact = ET.SubElement(cac_Party_2, "cac:Contact")
                     cbc_ElectronicMail = ET.SubElement(cac_Contact, "cbc:ElectronicMail")
                     cbc_ElectronicMail.text = customer_doc.custom_email_address
 

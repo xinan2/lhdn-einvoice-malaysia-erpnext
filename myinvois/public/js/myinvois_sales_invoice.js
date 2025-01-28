@@ -29,7 +29,7 @@ frappe.ui.form.on("Sales Invoice", {
                     
                     });
                     frm.reload_doc();
-                }, __("Test"));
+                }, __("LHDN E-Invois"));
                 frm.add_custom_button(__("Cancel e-invoice"), function() { 
                     frappe.call({
                        method:"myinvois.myinvois.sign_invoice.lhdn_Cancel_Background",
@@ -46,7 +46,7 @@ frappe.ui.form.on("Sales Invoice", {
                         frm.reload_doc();
                        }
                     });
-            }, __("Test"));
+            }, __("LHDN E-Invois"));
             
 
     },
