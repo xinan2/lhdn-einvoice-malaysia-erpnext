@@ -625,9 +625,25 @@ def xml_hash():
 #             frappe.throw(f"Error in xml hash: {str(e)}")
 
 
-def certificate_data():
+def certificate_data(invoice_company):
     try:
+        #Working for fetching specific company certificate
+        print("fetching company name",invoice_company)
+        company_wise = frappe.get_doc("Lhdn Authorizations", invoice_company)
+        print("company_wise",company_wise)
+        print("company_wise",company_wise.custom_attach_digital_certificate)
+        
+        # Get the certificate password
+        strPassword = company_wise.get_password('custom_certificate_password')
+        print("strPassword",strPassword)
+        
+         # Path to the attached certificate file
+        attached_file = company_wise.custom_attach_digital_certificate
+        if not attached_file:
+            frappe.throw("No certificate file attached for this company.")
 
+
+        
         # settings = frappe.get_doc('LHDN Malaysia Setting')
         # attached_file = settings.certificate_file
 
@@ -635,16 +651,24 @@ def certificate_data():
         #     frappe.throw("No PFX file attached in the settings.")
         # file_doc = frappe.get_doc("File", {"file_url": attached_file})
         # pfx_path = file_doc.get_full_path()
-
-        current_path = os.path.dirname(__file__)
-
-        # Path to the .p12 file
-        p12_file_path = os.path.join(current_path, "CERT_18893127.p12")  # include your softcert here
-        p12_password = b"7zDDQFYRDr"  # include your softcert password here (note: use byte string)
-
-        pfx_path = p12_file_path
         
-        pfx_password = "7zDDQFYRDr"
+        # Fetch the full file path
+        file_doc = frappe.get_doc("File", {"file_url": attached_file})
+        pfx_path = file_doc.get_full_path()
+        print("Certificate file path:", pfx_path)
+        
+        # Use the dynamic password
+        pfx_password = strPassword
+
+
+        # current_path = os.path.dirname(__file__)
+        # # Path to the .p12 file
+        # p12_file_path = os.path.join(current_path, "CERT_18893127.p12")  # include your softcert here
+        # p12_password = b"7zDDQFYRDr"  # include your softcert password here (note: use byte string)
+        # pfx_path = p12_file_path        
+        # pfx_password = "7zDDQFYRDr"
+        
+        
         pem_output_path = frappe.local.site + "/private/files/certificate.pem"
         pem_encryption_password = pfx_password.encode()   
         with open(pfx_path, "rb") as f:
@@ -910,31 +934,56 @@ from datetime import datetime, timedelta
 import requests
 import frappe
 
+
+
 @frappe.whitelist()
 def get_access_token(company_name):
     # Fetch the credentials from the custom doctype
     credentials = frappe.get_doc("Lhdn Authorizations", company_name)
     client_id = credentials.client_id
-    client_secret = credentials.get_password(fieldname='client_secret_key', raise_exception=False)   
+    client_secret = credentials.get_password(fieldname='client_secret_key', raise_exception=False)
 
     # Check if token is already available and not expired
     if credentials.access_token and credentials.token_expiry:
-        print("checking enter in first if")
         token_expiry = datetime.strptime(str(credentials.token_expiry), "%Y-%m-%d %H:%M:%S")
-        print("token_expiry", token_expiry)
         if datetime.now() < token_expiry:
-            print("second if")
             return credentials.access_token
 
-    # If token is expired or not available, request a new one
-    response = requests.request("POST", url=get_API_url(base_url="/connect/token"), data={
-        "client_id": client_id,
-        "client_secret": client_secret,
-        "grant_type": "client_credentials",
-        "scope": "InvoicingAPI"
-    })
+    url = get_API_url(base_url="/connect/token")
+    print("Request URL:", url)
 
-    print("response", response)
+    if credentials.custom_intermediary == 1:
+        # For intermediary, add the onbehalfof header
+        headers = {
+            "onbehalfof": credentials.custom_tin_no
+        }
+        response = requests.request(
+            "POST",
+            url=url,
+            headers=headers,
+            data={
+                "client_id": client_id,
+                "client_secret": client_secret,
+                "grant_type": "client_credentials",
+                "scope": "InvoicingAPI"
+            }
+        )
+    else:
+        # Request without onbehalfof header
+        response = requests.request(
+            "POST",
+            url=url,
+            data={
+                "client_id": client_id,
+                "client_secret": client_secret,
+                "grant_type": "client_credentials",
+                "scope": "InvoicingAPI"
+            }
+        )
+
+    print("Response Status Code:", response.status_code)
+    print("Response Text:", response.text)
+    print("Response Headers:", response.headers)
 
     if response.status_code == 200:
         data = response.json()
@@ -949,7 +998,68 @@ def get_access_token(company_name):
 
         return access_token
     else:
-        frappe.throw("Failed to fetch access token")
+        frappe.throw(f"Failed to fetch access token. Error: {response.text}")
+
+# @frappe.whitelist()
+# def get_access_token(company_name):
+#     # Fetch the credentials from the custom doctype
+#     credentials = frappe.get_doc("Lhdn Authorizations", company_name)
+#     client_id = credentials.client_id
+#     client_secret = credentials.get_password(fieldname='client_secret_key', raise_exception=False)   
+
+#     # Check if token is already available and not expired
+#     if credentials.access_token and credentials.token_expiry:
+#         print("checking enter in first if")
+#         token_expiry = datetime.strptime(str(credentials.token_expiry), "%Y-%m-%d %H:%M:%S")
+#         print("token_expiry", token_expiry)
+#         if datetime.now() < token_expiry:
+#             print("second if")
+#             return credentials.access_token
+
+
+#     if credentials.custom_intermediary == 1:
+#         # If token is expired or not available, request a new one
+#         headers = {
+#             "onbehalfof": credentials.custom_tin_no
+#         }
+#         response = requests.request(
+#             "POST",
+#             url=get_API_url(base_url="/connect/token"),
+#             headers=headers,
+#             data={
+#                 "client_id": client_id,
+#                 "client_secret": client_secret,
+#                 "grant_type": "client_credentials",
+#                 "scope": "InvoicingAPI"
+#             }
+#         )
+#     else:
+#         # If token is expired or not available, request a new one
+#         response = requests.request("POST", url=get_API_url(base_url="/connect/token"), data={
+#             "client_id": client_id,
+#             "client_secret": client_secret,
+#             "grant_type": "client_credentials",
+#             "scope": "InvoicingAPI"
+#         })
+    
+    
+
+#     print("response", response)
+
+#     if response.status_code == 200:
+#         data = response.json()
+#         access_token = data["access_token"]
+#         expires_in = data["expires_in"]
+#         token_expiry = datetime.now() + timedelta(seconds=expires_in)
+
+#         # Store the new token and expiry in the custom doctype
+#         credentials.access_token = access_token
+#         credentials.token_expiry = token_expiry.strftime("%Y-%m-%d %H:%M:%S")
+#         credentials.save()
+
+#         return access_token
+#     else:
+#         frappe.throw("Failed to fetch access token")
 
 
 def get_invoice_version():
@@ -1451,7 +1561,7 @@ def myinvois_Call(invoice_number, compliance_type):
         line_xml, doc_hash = xml_hash()
         print("line_xml",line_xml)
         print("doc_hash",doc_hash)
-        certificate_base64, formatted_issuer_name, x509_serial_number, cert_digest, signing_time = certificate_data()
+        certificate_base64, formatted_issuer_name, x509_serial_number, cert_digest, signing_time = certificate_data(sales_invoice_doc.company)
         
         signature = sign_data(line_xml)
         prop_cert_base64 = signed_properties_hash(signing_time, cert_digest, formatted_issuer_name, x509_serial_number)

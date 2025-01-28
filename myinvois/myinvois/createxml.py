@@ -215,6 +215,7 @@ def company_Data(invoice,sales_invoice_doc): #supplier data
                 # Supplier’s e-mail
                 if company_doc.email:
                     # cac_Contact = ET.SubElement(cac_Party_1, "cac:Contact")
+                    #new
                     cbc_ElectronicMail = ET.SubElement(cac_Contact, "cbc:ElectronicMail")
                     cbc_ElectronicMail.text = company_doc.email
                    

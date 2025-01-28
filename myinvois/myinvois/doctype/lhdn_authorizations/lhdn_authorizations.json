@@ -15,9 +15,10 @@
  "fields": [
   {
    "fieldname": "company_name",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Company Name",
+   "options": "Company",
    "reqd": 1,
    "unique": 1
   },
@@ -48,7 +49,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-16 22:19:33.538946",
+ "modified": "2025-01-28 10:27:14.566303",
  "modified_by": "Administrator",
  "module": "myinvois",
  "name": "Lhdn Authorizations",
