@@ -574,5 +574,5 @@
    "value": "[\"company_name\", \"client_id\", \"client_secret_key\", \"custom_intermediary\", \"access_token\", \"token_expiry\", \"custom_column_break_jnc3s\", \"custom_tin_no\", \"custom_attach_certificate\", \"custom_attach_digital_certificate\", \"custom_certificate_password\"]"
   }
  ],
- "sync_on_migrate": 0
+ "sync_on_migrate": 1
 }
