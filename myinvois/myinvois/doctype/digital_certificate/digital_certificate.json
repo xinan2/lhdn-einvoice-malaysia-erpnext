@@ -1,0 +1,72 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:certificate_identity",
+ "creation": "2025-02-06 00:27:23.849983",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "certificate_detail_section",
+  "certificate_identity",
+  "attach_certificate",
+  "column_break_zxww",
+  "certificate_password"
+ ],
+ "fields": [
+  {
+   "fieldname": "certificate_detail_section",
+   "fieldtype": "Section Break",
+   "label": "Certificate Detail"
+  },
+  {
+   "fieldname": "certificate_identity",
+   "fieldtype": "Link",
+   "label": "Certificate Identity/Owner",
+   "options": "Company",
+   "unique": 1
+  },
+  {
+   "fieldname": "attach_certificate",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Attach Certificate",
+   "reqd": 1
+  },
+  {
+   "fieldname": "certificate_password",
+   "fieldtype": "Password",
+   "in_list_view": 1,
+   "label": "Certificate Password",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_zxww",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-02-09 23:12:43.738247",
+ "modified_by": "Administrator",
+ "module": "myinvois",
+ "name": "Digital Certificate",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -141,8 +141,8 @@ def sign_document_digest(encoded_hash):
     current_path = os.path.dirname(__file__)
 
     # Path to the .p12 file
-    p12_file_path = os.path.join(current_path, "CERT_18893127.p12")  # include your softcert here
-    p12_password = b"7zDDQFYRDr"  # include your softcert password here (note: use byte string)
+    p12_file_path = os.path.join(current_path, "CERT_27.p12")  # include your softcert here
+    p12_password = b"232"  # include your softcert password here (note: use byte string)
 
     # Check if the file exists and is readable
     if not os.path.exists(p12_file_path):
@@ -545,7 +545,6 @@ def xml_base64_Decode(signed_xmlfile_name):
 
 def canonicalize_xml (tag_removed_xml):
     try:
-        #Code corrected by Farook K - ERPGulf
         canonical_xml = etree.tostring(tag_removed_xml, method="c14n").decode()
         return canonical_xml    
     except Exception as e:
@@ -637,7 +636,7 @@ def certificate_data(invoice_company):
         strPassword = company_wise.get_password('custom_certificate_password')
         print("strPassword",strPassword)
         
-         # Path to the attached certificate file
+        # Path to the attached certificate file
         attached_file = company_wise.custom_attach_digital_certificate
         if not attached_file:
             frappe.throw("No certificate file attached for this company.")
@@ -663,10 +662,10 @@ def certificate_data(invoice_company):
 
         # current_path = os.path.dirname(__file__)
         # # Path to the .p12 file
-        # p12_file_path = os.path.join(current_path, "CERT_18893127.p12")  # include your softcert here
-        # p12_password = b"7zDDQFYRDr"  # include your softcert password here (note: use byte string)
+        # p12_file_path = os.path.join(current_path, ".p12")  # include your softcert here
+        # p12_password = b""  # include your softcert password here (note: use byte string)
         # pfx_path = p12_file_path        
-        # pfx_password = "7zDDQFYRDr"
+        # pfx_password = ""
         
         
         pem_output_path = frappe.local.site + "/private/files/certificate.pem"
@@ -698,7 +697,7 @@ def certificate_data(invoice_company):
             if additional_certificates:
                 for cert in additional_certificates:
                     pem_file.write(cert.public_bytes(Encoding.PEM))
-            return  certificate_base64,formatted_issuer_name,  x509_serial_number ,cert_digest ,signing_time
+            return  certificate_base64,formatted_issuer_name,  x509_serial_number ,cert_digest ,signing_time,strPassword
         
 
     except Exception as e:
@@ -709,7 +708,7 @@ def certificate_data(invoice_company):
 def bytes_to_base64_string(value: bytes) -> str:   
    return base64.b64encode(value).decode('ASCII')
 
-def sign_data(line_xml):
+def sign_data(line_xml,cert_pass):
     try:
         # print(single_line_ xml1)
         hashdata = line_xml.decode().encode() 
@@ -724,7 +723,8 @@ def sign_data(line_xml):
         print("cert:",cert.issuer)
         # settings = frappe.get_doc('LHDN Malaysia Setting')
         # pass_file=settings.pfx_cert_password
-        pass_file = "7zDDQFYRDr"
+        # pass_file = ""
+        pass_file = cert_pass
         private_key = serialization.load_pem_private_key(
             cert_pem.encode(),
             password=pass_file.encode(),
@@ -1561,9 +1561,9 @@ def myinvois_Call(invoice_number, compliance_type):
         line_xml, doc_hash = xml_hash()
         print("line_xml",line_xml)
         print("doc_hash",doc_hash)
-        certificate_base64, formatted_issuer_name, x509_serial_number, cert_digest, signing_time = certificate_data(sales_invoice_doc.company)
+        certificate_base64, formatted_issuer_name, x509_serial_number, cert_digest, signing_time,strPassword = certificate_data(sales_invoice_doc.company)
         
-        signature = sign_data(line_xml)
+        signature = sign_data(line_xml,strPassword)
         prop_cert_base64 = signed_properties_hash(signing_time, cert_digest, formatted_issuer_name, x509_serial_number)
         
         ubl_extension_string(doc_hash, prop_cert_base64, signature, certificate_base64, signing_time, cert_digest, formatted_issuer_name, x509_serial_number, line_xml)

@@ -1,0 +1,45 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"S0qaPKez9M\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Myinvois App</span>\",\"col\":12}},{\"id\":\"YHYBBGxIMs\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Companies List\",\"col\":6}},{\"id\":\"QG71UKzUgm\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Digital Certificates List\",\"col\":6}},{\"id\":\"39bF8Y5K6-\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Assign Certificates To Companies</b></span>\",\"col\":12}},{\"id\":\"L3p3lko1D4\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Lhdn Authorizations\",\"col\":4}}]",
+ "creation": "2025-02-06 00:16:02.893194",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "menu",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Myinvois App",
+ "links": [],
+ "modified": "2025-02-10 21:22:00.166286",
+ "modified_by": "Administrator",
+ "module": "myinvois",
+ "name": "Myinvois App",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [
+  {
+   "document_type": "Lhdn Authorizations",
+   "label": "Lhdn Authorizations",
+   "quick_list_filter": "[]"
+  },
+  {
+   "document_type": "Digital Certificate",
+   "label": "Digital Certificates List",
+   "quick_list_filter": "[]"
+  },
+  {
+   "document_type": "Company",
+   "label": "Companies List",
+   "quick_list_filter": "[]"
+  }
+ ],
+ "roles": [],
+ "sequence_id": 22.0,
+ "shortcuts": [],
+ "title": "Myinvois App"
+}
