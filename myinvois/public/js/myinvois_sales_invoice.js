@@ -79,7 +79,59 @@ frappe.ui.form.on("Sales Invoice", {
         
         });
         frm.reload_doc();
+    },
+    setup: function(frm) {
+        frm.fields_dict["items"].grid.get_field("custom_exemption_against_item_tax_template").get_query = function(doc, cdt, cdn) {
+            return {
+                filters: {
+                    company: frm.doc.company,
+                    custom_lhdn_tax_type_code: ["!=", "E"] // Exclude "Tax Exemption"
+
+                }
+            };
+        };
+
+        // frm.set_query("taxes_and_charges", function() {
+        //     return {
+        //         filters: {
+        //             custom_lhdn_tax_type_code: ["!=", "E"] // Exclude "Tax Exemption"
+        //         }
+        //     };
+        // });
     }
+
+});
+
+
+frappe.ui.form.on("Sales Invoice Item", {
+    custom_exemption_against_item_tax_template: function(frm, cdt, cdn) {
+        let row = locals[cdt][cdn];
+    
+        if (row.custom_exemption_against_item_tax_template) {
+            frappe.call({
+                method: "frappe.client.get",
+                args: {
+                    doctype: "Item Tax Template",
+                    name: row.custom_exemption_against_item_tax_template
+                },
+                callback: function(r) {
+                    if (r.message && r.message.taxes) {
+                        let tax_rate = 0;
+    
+                        // Assuming you want the first available tax rate
+                        if (r.message.taxes.length > 0) {
+                            tax_rate = r.message.taxes[0].tax_rate;
+                        }
+    
+                        frappe.model.set_value(cdt, cdn, "custom_exemption_against_tax_rate", tax_rate);
+                        frappe.model.set_value(cdt, cdn, "custom_exemption_against_tax_rate", tax_rate);
+
+                    }
+                }
+            });
+        }
+    }
+
 
 });
 

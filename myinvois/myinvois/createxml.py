@@ -701,6 +701,50 @@ def item_data(invoice, sales_invoice_doc):
                 cbc_TaxAmount_3.text = "0"
                 # cbc_TaxAmount_3.text = str(abs(round(item_tax_percentage * single_item.base_net_amount / 100, 2)))  # 100 * 6 % = 6
 
+            #Tax Section
+                if single_item.custom_exemption_against_item_tax_template: 
+            
+                    #TaxSubtotal
+                    cac_TaxSubtotal = ET.SubElement(cac_TaxTotal, "cac:TaxSubtotal")
+
+
+                    #Amount Exempted from Tax(Invoice level tax exemption)
+                    cbc_TaxableAmount = ET.SubElement(cac_TaxSubtotal, "cbc:TaxableAmount")
+                    cbc_TaxableAmount.set("currencyID", sales_invoice_doc.currency)
+                    cbc_TaxableAmount.text = "0"   # 100  # #including only charges or discount and exclsing tax
+                    # cbc_TaxableAmount.text = str(single_item.base_net_amount)   # 100  # #including only charges or discount and exclsing tax
+
+                
+                    #commenting for testing tax rate
+                    cbc_TaxAmount_2 = ET.SubElement(cac_TaxSubtotal, "cbc:TaxAmount")
+                    cbc_TaxAmount_2.set("currencyID", sales_invoice_doc.currency)      
+                    cbc_TaxAmount_2.text =  "0"        
+                    # cbc_TaxAmount_2.text =  str(abs(round(item_tax_percentage * single_item.base_net_amount / 100, 2)))  # 100 * 6 % = 6
+
+                    cbc_TaxAmount_2 = ET.SubElement(cac_TaxSubtotal, "cbc:Percent")
+                    cbc_TaxAmount_2.text =  f"{single_item.custom_exemption_against_tax_rate:.2f}"
+                    
+                    cac_TaxCategory = ET.SubElement(cac_TaxSubtotal, "cac:TaxCategory")            
+                    
+                    cbc_TaxCategoryID = ET.SubElement(cac_TaxCategory, "cbc:ID")
+                    # cbc_TaxCategoryID.text = "01" # set taxable type provided by lhdn
+                    cbc_TaxCategoryID.text = single_item.custom_tax_code
+                    # Tax Rate in percentage
+                    # cbc_TaxRatePercent = ET.SubElement(cac_TaxCategory, "cbc:Percent")
+                    # cbc_TaxRatePercent.text = f"{item_tax_percentage:.2f}"
+
+                    
+
+                    cac_TaxScheme = ET.SubElement(cac_TaxCategory, "cac:TaxScheme")
+                    cbc_TaxSchemeID = ET.SubElement(cac_TaxScheme, "cbc:ID")
+                    cbc_TaxSchemeID.set("schemeID", "UN/ECE 5153")
+                    cbc_TaxSchemeID.set("schemeAgencyID", "6")
+                    cbc_TaxSchemeID.text = "OTH"
+           
+            
+            
+            
+            #Exemption Section    
 
                 #TaxSubtotal
                 cac_TaxSubtotal = ET.SubElement(cac_TaxTotal, "cac:TaxSubtotal")
@@ -715,7 +759,8 @@ def item_data(invoice, sales_invoice_doc):
                 #tax amount                
                 cbc_TaxAmount_2 = ET.SubElement(cac_TaxSubtotal, "cbc:TaxAmount")
                 cbc_TaxAmount_2.set("currencyID", sales_invoice_doc.currency)                
-                cbc_TaxAmount_2.text = "0"
+                # cbc_TaxAmount_2.text = "0"
+                cbc_TaxAmount_2.text =  str(abs(round(single_item.custom_exemption_against_tax_rate * single_item.base_net_amount / 100, 2)))  # 100 * 6 % = 6
 
                 cac_TaxCategory = ET.SubElement(cac_TaxSubtotal, "cac:TaxCategory")            
                 cbc_TaxCategoryID = ET.SubElement(cac_TaxCategory, "cbc:ID")
@@ -724,7 +769,7 @@ def item_data(invoice, sales_invoice_doc):
 
                 # Details of Tax Exemption
                 cbc_TaxExemptionReason = ET.SubElement(cac_TaxCategory, "cbc:TaxExemptionReason")
-                cbc_TaxExemptionReason.text = single_item.description
+                cbc_TaxExemptionReason.text = single_item.custom_details_of_tax_exemption
 
                 cac_TaxScheme = ET.SubElement(cac_TaxCategory, "cac:TaxScheme")
                 cbc_TaxSchemeID = ET.SubElement(cac_TaxScheme, "cbc:ID")
@@ -753,10 +798,13 @@ def item_data(invoice, sales_invoice_doc):
                 cbc_TaxableAmount.text = str(single_item.base_net_amount)   # 100  # #including only charges or discount and exclsing tax
 
             
+                #commenting for testing tax rate
                 cbc_TaxAmount_2 = ET.SubElement(cac_TaxSubtotal, "cbc:TaxAmount")
                 cbc_TaxAmount_2.set("currencyID", sales_invoice_doc.currency)                
                 cbc_TaxAmount_2.text =  str(abs(round(item_tax_percentage * single_item.base_net_amount / 100, 2)))  # 100 * 6 % = 6
 
+                cbc_TaxAmount_2 = ET.SubElement(cac_TaxSubtotal, "cbc:Percent")
+                cbc_TaxAmount_2.text =  f"{item_tax_percentage:.2f}"
                   
                 cac_TaxCategory = ET.SubElement(cac_TaxSubtotal, "cac:TaxCategory")            
                 
@@ -764,18 +812,15 @@ def item_data(invoice, sales_invoice_doc):
                 cbc_TaxCategoryID.text = single_item.custom_lhdn_tax_type_code if single_item.custom_lhdn_tax_type_code else sales_invoice_doc.custom_lhdn_tax_type_code  # set taxable type provided by lhdn
 
                 # Tax Rate in percentage
-                cbc_TaxRatePercent = ET.SubElement(cac_TaxCategory, "cbc:Percent")
-                cbc_TaxRatePercent.text = f"{item_tax_percentage:.2f}"
-
-                
+                # cbc_TaxRatePercent = ET.SubElement(cac_TaxCategory, "cbc:Percent")
+                # cbc_TaxRatePercent.text = f"{item_tax_percentage:.2f}"
+               
 
                 cac_TaxScheme = ET.SubElement(cac_TaxCategory, "cac:TaxScheme")
                 cbc_TaxSchemeID = ET.SubElement(cac_TaxScheme, "cbc:ID")
                 cbc_TaxSchemeID.set("schemeID", "UN/ECE 5153")
                 cbc_TaxSchemeID.set("schemeAgencyID", "6")
                 cbc_TaxSchemeID.text = "OTH"
-
-
 
            
             # Item
@@ -804,40 +849,6 @@ def item_data(invoice, sales_invoice_doc):
             cbc_Amount.set("currencyID", sales_invoice_doc.currency)
             cbc_Amount.text = str((single_item.base_price_list_rate) * (single_item.qty))   #excluding any charges , discount and tax
                                     
-        
-
-
-
-    
-            # cbc_TaxSubtotalAmount = ET.SubElement(cac_TaxSubtotal, "cbc:TaxAmount")
-            # cbc_TaxSubtotalAmount.set("currencyID", "MYR")
-            # cbc_TaxSubtotalAmount.text = cbc_TaxAmount_3.text
-
-            # if sales_invoice_doc.taxes_and_charges == "Exempted":
-            #     cbc_TaxCategoryID.text = "E"
-
-            #     # Details of Tax Exemption
-            #     cbc_TaxExemptionReason = ET.SubElement(cac_TaxCategory, "cbc:TaxExemptionReason")
-            #     cbc_TaxExemptionReason.text = "Goods acquired with SST exemption under Sales Tax Act 2018. Reference No: (C01-2345-67890123)"
-
-            #     cbc_TaxableAmount = ET.SubElement(cac_TaxSubtotal, "cbc:TaxableAmount")
-            #     cbc_TaxableAmount.set("currencyID", "MYR")
-            #     cbc_TaxableAmount.text = str(abs(single_item.base_net_amount))
-
-            #     cbc_TaxAmount_3.text = "0.00"
-            #     cbc_TaxSubtotalAmount.text = "0.00"
-
-            # # Subtotal
-            # cac_ItemPriceExtension = ET.SubElement(cac_InvoiceLine, "cac:ItemPriceExtension")
-            # cbc_Amount = ET.SubElement(cac_ItemPriceExtension, "cbc:Amount")
-            # cbc_Amount.set("currencyID", sales_invoice_doc.currency)
-            # cbc_Amount.text = str(single_item.base_net_amount)
-
-            # # Total Excluding Tax
-            # cbc_LineExtensionAmount_1 = ET.SubElement(cac_InvoiceLine, "cbc:LineExtensionAmount")
-            # cbc_LineExtensionAmount_1.set("currencyID", sales_invoice_doc.currency)
-            # cbc_LineExtensionAmount_1.text = str(single_item.base_net_amount)
-
         return invoice
     except Exception as e:
         frappe.throw("Error occurred in item data: " + str(e))
@@ -872,46 +883,6 @@ def get_tax_total_from_items(sales_invoice_doc):
                 return total_tax 
             except Exception as e:
                     frappe.throw("Error occured in get_tax_total_from_items "+ str(e) )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def set_total_amounts(invoice, sales_invoice_doc):
@@ -1042,130 +1013,6 @@ def xml_structuring(invoice,sales_invoice_doc):
     return raw_xml
 
 
-# def xml_structuring(invoice,sales_invoice_doc):
-#             try:
-#                 xml_declaration = "<?xml version='1.0' encoding='UTF-8'?>\n"
-#                 tree = ET.ElementTree(invoice)
-#                 with open(frappe.local.site + "/private/files/xml_files.xml", 'wb') as file:
-#                     tree.write(file, encoding='utf-8', xml_declaration=True)
-#                 with open(frappe.local.site + "/private/files/xml_files.xml", 'r') as file:
-#                     xml_string = file.read()
-#                 xml_dom = minidom.parseString(xml_string)
-#                 pretty_xml_string = xml_dom.toprettyxml(indent="  ")   # created xml into formatted xml form 
-#                 print("Main pretty xml string",pretty_xml_string)
-#                 with open(frappe.local.site + "/private/files/finalzatcaxml.xml", 'w') as file:
-#                     file.write(pretty_xml_string)
-#                           # Attach the getting xml for each invoice
-#                 try:
-#                     if frappe.db.exists("File",{ "attached_to_name": sales_invoice_doc.name, "attached_to_doctype": sales_invoice_doc.doctype }):
-#                         frappe.db.delete("File",{ "attached_to_name":sales_invoice_doc.name, "attached_to_doctype": sales_invoice_doc.doctype })
-#                 except Exception as e:
-#                     frappe.throw(frappe.get_traceback())
-                
-#                 try:
-#                     fileX = frappe.get_doc(
-#                         {   "doctype": "File",        
-#                             "file_type": "xml",  
-#                             "file_name":  "E-invoice-" + sales_invoice_doc.name + ".xml",
-#                             "attached_to_doctype":sales_invoice_doc.doctype,
-#                             "attached_to_name":sales_invoice_doc.name, 
-#                             "content": pretty_xml_string,
-#                             "is_private": 1,})
-#                     fileX.save()
-#                 except Exception as e:
-#                     frappe.throw(frappe.get_traceback())
-                
-#                 try:
-#                     frappe.db.get_value('File', {'attached_to_name':sales_invoice_doc.name, 'attached_to_doctype': sales_invoice_doc.doctype}, ['file_name'])
-#                 except Exception as e:
-#                     frappe.throw(frappe.get_traceback())
-#             except Exception as e:
-#                     frappe.throw("Error occured in XML structuring and attach. Please contact your system administrator"+ str(e) )
-
-
-
-## zatacasdk
-# def xml_structuring(invoice,sales_invoice_doc):
-#             try:
-#                 print("enter in xml structuring")
-#                 xml_declaration = "<?xml version='1.0' encoding='UTF-8'?>\n"
-#                 tree = ET.ElementTree(invoice)
-#                 with open(f"xml_files.xml", 'wb') as file:
-#                     tree.write(file, encoding='utf-8', xml_declaration=True)
-#                 with open(f"xml_files.xml", 'r') as file:
-#                     xml_string = file.read()
-#                 xml_dom = minidom.parseString(xml_string)
-#                 pretty_xml_string = xml_dom.toprettyxml(indent="  ")   # created xml into formatted xml form 
-#                 print("pretty_xml_string",pretty_xml_string)
-#                 with open(f"finalzatcaxml.xml", 'w') as file:        #need to change
-#                     file.write(pretty_xml_string)
-#                           # Attach the getting xml for each invoice
-#                 try:
-#                     if frappe.db.exists("File",{ "attached_to_name": sales_invoice_doc.name, "attached_to_doctype": sales_invoice_doc.doctype }):
-#                         frappe.db.delete("File",{ "attached_to_name":sales_invoice_doc.name, "attached_to_doctype": sales_invoice_doc.doctype })
-#                 except Exception as e:
-#                     frappe.throw(frappe.get_traceback())
-                
-#                 try:
-#                     fileX = frappe.get_doc(
-#                         {   "doctype": "File",        
-#                             "file_type": "xml",  
-#                             "file_name":  "E-invoice-" + sales_invoice_doc.name + ".xml",
-#                             "attached_to_doctype":sales_invoice_doc.doctype,
-#                             "attached_to_name":sales_invoice_doc.name, 
-#                             "content": pretty_xml_string,
-#                             "is_private": 1,})
-#                     fileX.save()
-#                 except Exception as e:
-#                     frappe.throw(frappe.get_traceback())
-                
-#                 try:
-#                     frappe.db.get_value('File', {'attached_to_name':sales_invoice_doc.name, 'attached_to_doctype': sales_invoice_doc.doctype}, ['file_name'])
-#                 except Exception as e:
-#                     frappe.throw(frappe.get_traceback())
-#             except Exception as e:
-#                     frappe.throw("Error occured in XML structuring and attach. Please contact your system administrator"+ str(e) )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 def get_ICV_code(invoice_number):
                 try:
@@ -1175,10 +1022,17 @@ def get_ICV_code(invoice_number):
                     frappe.throw("error in getting icv number:  "+ str(e) )
                     
 
-  
-
-
-
+def invoice_Typecode_Standard(invoice,sales_invoice_doc):
+            try:
+                    cbc_InvoiceTypeCode = ET.SubElement(invoice, "cbc:InvoiceTypeCode")
+                    cbc_InvoiceTypeCode.set("name", "0100000") # Standard
+                    if sales_invoice_doc.is_return == 0:
+                        cbc_InvoiceTypeCode.text = "388"
+                    elif sales_invoice_doc.is_return == 1:     # return items and simplified invoice
+                        cbc_InvoiceTypeCode.text = "381" # Credit note
+                    return invoice
+            except Exception as e:
+                    frappe.throw("Error in standard invoice type code: "+ str(e))
 
 def invoice_Typecode_Simplified(invoice,sales_invoice_doc):
             try:                             
@@ -1192,189 +1046,3 @@ def invoice_Typecode_Simplified(invoice,sales_invoice_doc):
                 return invoice
             except Exception as e:
                     frappe.throw("error occured in simplified invoice typecode"+ str(e) )
-
-def invoice_Typecode_Standard(invoice,sales_invoice_doc):
-            try:
-                    cbc_InvoiceTypeCode = ET.SubElement(invoice, "cbc:InvoiceTypeCode")
-                    cbc_InvoiceTypeCode.set("name", "0100000") # Standard
-                    if sales_invoice_doc.is_return == 0:
-                        cbc_InvoiceTypeCode.text = "388"
-                    elif sales_invoice_doc.is_return == 1:     # return items and simplified invoice
-                        cbc_InvoiceTypeCode.text = "381" # Credit note
-                    return invoice
-            except Exception as e:
-                    frappe.throw("Error in standard invoice type code: "+ str(e))
-                    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def doc_Reference_compliance(invoice,sales_invoice_doc,invoice_number, compliance_type):
-            try:
-                cbc_DocumentCurrencyCode = ET.SubElement(invoice, "cbc:DocumentCurrencyCode")
-                cbc_DocumentCurrencyCode.text = sales_invoice_doc.currency
-                cbc_TaxCurrencyCode = ET.SubElement(invoice, "cbc:TaxCurrencyCode")
-                cbc_TaxCurrencyCode.text = sales_invoice_doc.currency
-                
-                if compliance_type == "3" or compliance_type == "4" or compliance_type == "5" or compliance_type == "6":
-                
-                    cac_BillingReference = ET.SubElement(invoice, "cac:BillingReference")
-                    cac_InvoiceDocumentReference = ET.SubElement(cac_BillingReference, "cac:InvoiceDocumentReference")
-                    cbc_ID13 = ET.SubElement(cac_InvoiceDocumentReference, "cbc:ID")
-                    cbc_ID13.text = "6666666"  # field from return against invoice. 
-                
-                cac_AdditionalDocumentReference = ET.SubElement(invoice, "cac:AdditionalDocumentReference")
-                cbc_ID_1 = ET.SubElement(cac_AdditionalDocumentReference, "cbc:ID")
-                cbc_ID_1.text = "ICV"
-                cbc_UUID_1 = ET.SubElement(cac_AdditionalDocumentReference, "cbc:UUID")
-                cbc_UUID_1.text = str(get_ICV_code(invoice_number))
-                return invoice  
-            except Exception as e:
-                    frappe.throw("Error occured in  reference doc" + str(e) )
-
-def get_pih_for_company(pih_data, company_name):
-                
-                try:
-                    for entry in pih_data.get("data", []):
-                        if entry.get("company") == company_name:
-                            return entry.get("pih")
-                    frappe.throw("Error while retrieving  PIH of company for production:  " + str(e) )
-                except Exception as e:
-                        frappe.throw("Error in getting PIH of company for production:  " + str(e) )
-
-
-def additional_Reference(invoice):
-            try:
-            #     settings=frappe.get_doc('Zatca setting')
-            #     cac_AdditionalDocumentReference2 = ET.SubElement(invoice, "cac:AdditionalDocumentReference")
-            #     cbc_ID_1_1 = ET.SubElement(cac_AdditionalDocumentReference2, "cbc:ID")
-            #     cbc_ID_1_1.text = "PIH"
-            #     cac_Attachment = ET.SubElement(cac_AdditionalDocumentReference2, "cac:Attachment")
-            #     cbc_EmbeddedDocumentBinaryObject = ET.SubElement(cac_Attachment, "cbc:EmbeddedDocumentBinaryObject")
-            #     cbc_EmbeddedDocumentBinaryObject.set("mimeCode", "text/plain")
-                
-            #     settings = frappe.get_doc('Zatca setting')
-            #     company = settings.company
-            #     company_name = frappe.db.get_value("Company", company, "abbr")
-            #     pih_data_raw = settings.get("pih", "{}")
-            #     pih_data = json.loads(pih_data_raw)
-            #     pih = get_pih_for_company(pih_data, company_name)
-                
-            #     cbc_EmbeddedDocumentBinaryObject.text = pih
-            #     # cbc_EmbeddedDocumentBinaryObject.text = "L0Awl814W4ycuFvjDVL/vIW08mNRNAwqfdlF5i/3dpU="
-            # # QR CODE ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-            #     cac_AdditionalDocumentReference22 = ET.SubElement(invoice, "cac:AdditionalDocumentReference")
-            #     cbc_ID_1_12 = ET.SubElement(cac_AdditionalDocumentReference22, "cbc:ID")
-            #     cbc_ID_1_12.text = "QR"
-            #     cac_Attachment22 = ET.SubElement(cac_AdditionalDocumentReference22, "cac:Attachment")
-            #     cbc_EmbeddedDocumentBinaryObject22 = ET.SubElement(cac_Attachment22, "cbc:EmbeddedDocumentBinaryObject")
-            #     cbc_EmbeddedDocumentBinaryObject22.set("mimeCode", "text/plain")
-            #     cbc_EmbeddedDocumentBinaryObject22.text = "GsiuvGjvchjbFhibcDhjv1886G"
-            # #END  QR CODE ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                cac_sign = ET.SubElement(invoice, "cac:Signature")
-                cbc_id_sign = ET.SubElement(cac_sign, "cbc:ID")
-                cbc_method_sign = ET.SubElement(cac_sign, "cbc:SignatureMethod")
-                cbc_id_sign.text = "urn:oasis:names:specification:ubl:signature:Invoice"
-                cbc_method_sign.text = "urn:oasis:names:specification:ubl:dsig:enveloped:xades"
-                return invoice
-            except Exception as e:
-                    frappe.throw("error occured in additional refrences" + str(e) )
-
-
-
-def delivery_And_PaymentMeans(invoice,sales_invoice_doc, is_return):
-            try:
-                cac_Delivery = ET.SubElement(invoice, "cac:Delivery")
-                cbc_ActualDeliveryDate = ET.SubElement(cac_Delivery, "cbc:ActualDeliveryDate")
-                cbc_ActualDeliveryDate.text = str(sales_invoice_doc.due_date)
-                cac_PaymentMeans = ET.SubElement(invoice, "cac:PaymentMeans")
-                cbc_PaymentMeansCode = ET.SubElement(cac_PaymentMeans, "cbc:PaymentMeansCode")
-                cbc_PaymentMeansCode.text = "30"
-                
-                if is_return == 1:
-                    cbc_InstructionNote = ET.SubElement(cac_PaymentMeans, "cbc:InstructionNote")
-                    cbc_InstructionNote.text = "Cancellation"    
-                return invoice
-            except Exception as e:
-                    frappe.throw("Delivery and payment means failed"+ str(e) )
-def delivery_And_PaymentMeans_for_Compliance(invoice,sales_invoice_doc, compliance_type):
-            try:
-                cac_Delivery = ET.SubElement(invoice, "cac:Delivery")
-                cbc_ActualDeliveryDate = ET.SubElement(cac_Delivery, "cbc:ActualDeliveryDate")
-                cbc_ActualDeliveryDate.text = str(sales_invoice_doc.due_date)
-                cac_PaymentMeans = ET.SubElement(invoice, "cac:PaymentMeans")
-                cbc_PaymentMeansCode = ET.SubElement(cac_PaymentMeans, "cbc:PaymentMeansCode")
-                cbc_PaymentMeansCode.text = "30"
-                
-                if compliance_type == "3" or compliance_type == "4" or compliance_type == "5" or compliance_type == "6":
-                    cbc_InstructionNote = ET.SubElement(cac_PaymentMeans, "cbc:InstructionNote")
-                    cbc_InstructionNote.text = "Cancellation"    
-                return invoice
-            except Exception as e:
-                    frappe.throw("Delivery and payment means failed"+ str(e) )
-                                        
-def billing_reference_for_credit_and_debit_note(invoice,sales_invoice_doc):
-            try:
-                #details of original invoice
-                cac_BillingReference = ET.SubElement(invoice, "cac:BillingReference")
-                cac_InvoiceDocumentReference = ET.SubElement(cac_BillingReference, "cac:InvoiceDocumentReference")
-                cbc_ID13 = ET.SubElement(cac_InvoiceDocumentReference, "cbc:ID")
-                cbc_ID13.text = sales_invoice_doc.return_against  # field from return against invoice. 
-                
-                return invoice
-            except Exception as e:
-                    frappe.throw("credit and debit note billing failed"+ str(e) )
-
-def get_exemption_reason_map():
-    return {
-        "VATEX-SA-29": "Financial services mentioned in Article 29 of the VAT Regulations.",
-        "VATEX-SA-29-7": "Life insurance services mentioned in Article 29 of the VAT Regulations.",
-        "VATEX-SA-30": "Real estate transactions mentioned in Article 30 of the VAT Regulations.",
-        "VATEX-SA-32": "Export of goods.",
-        "VATEX-SA-33": "Export of services.",
-        "VATEX-SA-34-1": "The international transport of Goods.",
-        "VATEX-SA-34-2": "International transport of passengers.",
-        "VATEX-SA-34-3": "Services directly connected and incidental to a Supply of international passenger transport.",
-        "VATEX-SA-34-4": "Supply of a qualifying means of transport.",
-        "VATEX-SA-34-5": "Any services relating to Goods or passenger transportation, as defined in article twenty five of these Regulations.",
-        "VATEX-SA-35": "Medicines and medical equipment.",
-        "VATEX-SA-36": "Qualifying metals.",
-        "VATEX-SA-EDU": "Private education to citizen.",
-        "VATEX-SA-HEA ": "Private healthcare to citizen.",
-        "VATEX-SA-MLTRY": "Supply of qualified military goods",
-        "VATEX-SA-OOS": "The reason is a free text, has to be provided by the taxpayer on case to case basis."
-    
-    }
-
-
-
-
