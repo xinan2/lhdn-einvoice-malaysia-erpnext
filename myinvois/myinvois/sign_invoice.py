@@ -775,7 +775,7 @@ def lhdn_Background(invoice_number):
                         print("invoice versionnnnnnnn",invoice_version)
                         tax_rate = float(sales_invoice_doc.taxes[0].rate)
 
-                        # if f"{tax_rate:.2f}" not in ['5.00', '15.00']:
+                        # if f"{tax_rate:.2f}"  not in ['5.00', '15.00']:
                         #     if sales_invoice_doc.custom_zatca_tax_category not in ["Zero Rated", "Exempted","Services outside scope of tax / Not subject to VAT"]:
                         #         frappe.throw("Zatca tax category should be 'zero rated' or 'Exempted'or 'Services outside scope of tax / Not subject to VAT'.")
 
