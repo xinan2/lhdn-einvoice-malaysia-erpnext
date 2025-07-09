@@ -98,7 +98,17 @@ frappe.ui.form.on("Sales Invoice", {
         //         }
         //     };
         // });
-    }
+    },
+    before_save: function(frm) {
+        
+        if (frm.doc.is_return === 1 && frm.doc.custom_einvoice_type != "Credit Note") {
+            console.log("enter in this lock");
+            
+           frm.set_value("custom_einvoice_type", "Credit Note");
+           
+        }
+
+    },
 
 });
 

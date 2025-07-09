@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:code",
+ "autoname": "field:description",
  "creation": "2024-07-25 19:21:35.636823",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -19,12 +19,13 @@
   {
    "fieldname": "description",
    "fieldtype": "Data",
-   "label": "Description"
+   "label": "Description",
+   "unique": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-25 19:23:13.290297",
+ "modified": "2025-06-23 22:58:41.922233",
  "modified_by": "Administrator",
  "module": "myinvois",
  "name": "E-Invoice Types",
