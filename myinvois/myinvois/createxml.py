@@ -671,8 +671,9 @@ def item_data(invoice, sales_invoice_doc):
                     abs(round(item_tax_percentage * single_item.base_net_amount / 100, 2))
                     )  # 100 * 6 % = 6
 
-                cbc_TaxAmount_2 = ET.SubElement(cac_TaxSubtotal, "cbc:Percent")
+                # cbc_TaxAmount_2 = ET.SubElement(cac_TaxSubtotal, "cbc:Percent")
                 # cbc_TaxAmount_2.text =  f"{item_tax_percentage:.2f}"
+                cbc_Percent = ET.SubElement(cac_TaxSubtotal, "cbc:Percent")
                 cbc_Percent.text = f"{abs(item_tax_percentage):.2f}"
 
                   
