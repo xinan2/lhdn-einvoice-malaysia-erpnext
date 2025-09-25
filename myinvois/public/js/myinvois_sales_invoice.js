@@ -1,7 +1,7 @@
 
 frappe.ui.form.on("Sales Invoice", {
     refresh: function(frm) {
-                frm.add_custom_button(__("Send e-invoice"), function() {
+            frm.add_custom_button(__("Send e-invoice"), function() {
                     frm.call({
                         // method:"myinvois.myinvois.myinvoissdkcode.myinvois_Call",
                         // method:"myinvois.myinvois.sign_invoice.myinvois_Call",
@@ -30,7 +30,7 @@ frappe.ui.form.on("Sales Invoice", {
                     });
                     frm.reload_doc();
                 }, __("LHDN E-Invois"));
-                frm.add_custom_button(__("Cancel e-invoice"), function() { 
+            frm.add_custom_button(__("Cancel e-invoice"), function() { 
                     frappe.call({
                        method:"myinvois.myinvois.sign_invoice.lhdn_Cancel_Background",
                        args:{
@@ -47,7 +47,16 @@ frappe.ui.form.on("Sales Invoice", {
                        }
                     });
             }, __("LHDN E-Invois"));
-            
+
+            frm.set_query("custom_einvoice_type", function() {
+                return {
+                    filters: {
+                        "custom_doctype": ["=", "Sales Invoice"] 
+                    }
+                };
+            });
+
+       
 
     },
     custom_refresh_status:function(frm){

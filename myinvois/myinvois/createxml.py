@@ -101,7 +101,7 @@ def salesinvoice_data(invoice,invoice_number):
         
         #managing einvoice types 
         if not sales_invoice_doc.custom_einvoice_type:
-            frappe.throw("Please select the e-invoice type in the sales invoice")
+            frappe.throw("Please select the E-invoice Type in the Purchase Invoice")
         
         if sales_invoice_doc.is_return == 1:
             if sales_invoice_doc.custom_einvoice_type != "Credit Note":
@@ -361,12 +361,13 @@ def invoice_Typecode_Compliance(invoice,compliance_type):
             cbc_InvoiceTypeCode.text = "01"
         elif compliance_type == "02":  # Credit Note
             cbc_InvoiceTypeCode.text = "02"
+        elif compliance_type == "11":  # Self-billed Invoice
+            cbc_InvoiceTypeCode.text = "11"
+            
         # elif compliance_type == "3":  # Debit Note
         #     cbc_InvoiceTypeCode.text = "03"
         # elif compliance_type == "4":  # Refund Note
         #     cbc_InvoiceTypeCode.text = "04"
-        # elif compliance_type == "11":  # Self-billed Invoice
-        #     cbc_InvoiceTypeCode.text = "11"
         # elif compliance_type == "12":  # Self-billed Credit Note
         #     cbc_InvoiceTypeCode.text = "12"
         # elif compliance_type == "13":  # Self-billed Debit Note
@@ -759,6 +760,7 @@ def get_tax_total_from_items(sales_invoice_doc):
         return total_tax 
     except Exception as e:
             frappe.throw("Error occured in get_tax_total_from_items "+ str(e) )
+
 
 def xml_structuring(invoice,sales_invoice_doc):
   

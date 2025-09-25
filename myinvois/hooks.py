@@ -50,6 +50,7 @@ fixtures = [
 # doctype_js = {"doctype" : "public/js/doctype.js"}
 doctype_js = {
     "Sales Invoice" : "public/js/myinvois_sales_invoice.js",
+    "Purchase Invoice" : "public/js/myinvois_purchase_invoice.js",
     "Lhdn Authorizations":  "public/js/myinvois_lhdn_authorizations.js"
     }
 

@@ -364,51 +364,51 @@ def myinvois_Call(invoice_number):
 
 
 
-def signed_properties_hash():
-    try:
-        namespaces = {
-        'ext': 'urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2',
-        'sig': 'http://www.w3.org/2000/09/xmldsig#',
-        'sac': 'http://uri.etsi.org/01903/v1.3.2#',
-        'ds': 'http://www.w3.org/2000/09/xmldsig#',
-        'xades': 'http://uri.etsi.org/01903/v1.3.2#'
-        }
+# def signed_properties_hash():
+#     try:
+#         namespaces = {
+#         'ext': 'urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2',
+#         'sig': 'http://www.w3.org/2000/09/xmldsig#',
+#         'sac': 'http://uri.etsi.org/01903/v1.3.2#',
+#         'ds': 'http://www.w3.org/2000/09/xmldsig#',
+#         'xades': 'http://uri.etsi.org/01903/v1.3.2#'
+#         }
 
-        # Replace this with your actual XML file path
-        xml_file_path = frappe.local.site + '/private/files/after_step_4.xml'
+#         # Replace this with your actual XML file path
+#         xml_file_path = frappe.local.site + '/private/files/after_step_4.xml'
 
-        # Load the XML file
-        updated_invoice_xml = etree.parse(xml_file_path)
-        root = updated_invoice_xml.getroot()
+#         # Load the XML file
+#         updated_invoice_xml = etree.parse(xml_file_path)
+#         root = updated_invoice_xml.getroot()
 
-        # Step 1: Extract the SignedProperties tag using XPath
-        signed_properties = root.xpath(
-            '/Invoice/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/sig:UBLDocumentSignatures/'
-            'sac:SignatureInformation/ds:Signature/ds:Object/xades:QualifyingProperties/xades:SignedProperties',
-            namespaces=namespaces
-        )
+#         # Step 1: Extract the SignedProperties tag using XPath
+#         signed_properties = root.xpath(
+#             '/Invoice/ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent/sig:UBLDocumentSignatures/'
+#             'sac:SignatureInformation/ds:Signature/ds:Object/xades:QualifyingProperties/xades:SignedProperties',
+#             namespaces=namespaces
+#         )
 
-        if not signed_properties:
-            raise ValueError("SignedProperties element not found.")
+#         if not signed_properties:
+#             raise ValueError("SignedProperties element not found.")
 
-        # Get the first matching element
-        signed_properties_xml = signed_properties[0]
+#         # Get the first matching element
+#         signed_properties_xml = signed_properties[0]
 
-        # Step 2: Linearize the XML block (remove spaces)
-        linearized_xml = etree.tostring(signed_properties_xml, encoding='utf-8', xml_declaration=False).decode('utf-8')
-        linearized_xml = ''.join(linearized_xml.split())  # Remove spaces
+#         # Step 2: Linearize the XML block (remove spaces)
+#         linearized_xml = etree.tostring(signed_properties_xml, encoding='utf-8', xml_declaration=False).decode('utf-8')
+#         linearized_xml = ''.join(linearized_xml.split())  # Remove spaces
 
-        # Step 3: Hash the property tag using SHA-256
-        sha256_hash = hashlib.sha256(linearized_xml.encode('utf-8')).hexdigest()
+#         # Step 3: Hash the property tag using SHA-256
+#         sha256_hash = hashlib.sha256(linearized_xml.encode('utf-8')).hexdigest()
 
-        # Step 4: Encode the hashed property tag using HEX-to-Base64
-        props_digest_base64 = base64.b64encode(bytes.fromhex(sha256_hash)).decode('utf-8')
+#         # Step 4: Encode the hashed property tag using HEX-to-Base64
+#         props_digest_base64 = base64.b64encode(bytes.fromhex(sha256_hash)).decode('utf-8')
 
-        # Step 5: Return the PropsDigest
-        return props_digest_base64
+#         # Step 5: Return the PropsDigest
+#         return props_digest_base64
 
-    except Exception as e:
-        raise Exception("Error in generating signed properties hash: " + str(e))
+#     except Exception as e:
+#         raise Exception("Error in generating signed properties hash: " + str(e))
 
 
 def removeTags(finalzatcaxml):
