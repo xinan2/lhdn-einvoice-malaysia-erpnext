@@ -38,7 +38,8 @@ def add_billing_reference(invoice,invoice_number,sales_invoice_doc):
         invoice_document_reference = ET.SubElement(billing_reference, "cac:InvoiceDocumentReference")   
         
         if sales_invoice_doc.custom_einvoice_type in [
-            "Credit Note"
+            "Credit Note",
+            "Debit Note",
         ]:
             invoice_id = sales_invoice_doc.return_against
 
@@ -51,6 +52,7 @@ def add_billing_reference(invoice,invoice_number,sales_invoice_doc):
         
         if sales_invoice_doc.custom_einvoice_type in [
             "Credit Note",
+            "Debit Note",
            
         ]:
             doc_id = sales_invoice_doc.return_against
@@ -67,7 +69,7 @@ def add_billing_reference(invoice,invoice_number,sales_invoice_doc):
                 cbc_ID = ET.SubElement(invoice_document_reference, "cbc:UUID")   
                 cbc_ID.text = str(uuid)                
             else:
-                frappe.throw("No UUID documents no found in custom_uuid.")
+                frappe.throw("No UUID accepted documents found in custom_uuid.")
 
     except (
         frappe.DoesNotExistError,
@@ -107,7 +109,15 @@ def salesinvoice_data(invoice,invoice_number):
             if sales_invoice_doc.custom_einvoice_type != "Credit Note":
                 frappe.throw("Please select the e-invoice type as Credit Note for return sales invoice")
           
-        
+        if sales_invoice_doc.is_debit_note == 1:
+            # Check if the field is already set to "03 : Debit Note"
+            if sales_invoice_doc.custom_einvoice_type != "Debit Note":
+                frappe.throw(
+                    (
+                        "As per LHDN Regulation,Choose the invoice type code as '03 : Debit Note'"
+                    )
+                )
+                
         compliance_type = sales_invoice_doc.custom_einvoice_code 
         # add_billing_reference(invoice,invoice_number,sales_invoice_doc)
 
@@ -357,16 +367,21 @@ def invoice_Typecode_Compliance(invoice,compliance_type):
         if invoice_doc_version == 0:
             cbc_InvoiceTypeCode.set("listVersionID", "1.0")  # Current e-Invoice version
 
+        #SALES INVOICE
         if compliance_type == "01":  # Invoice
             cbc_InvoiceTypeCode.text = "01"
         elif compliance_type == "02":  # Credit Note
             cbc_InvoiceTypeCode.text = "02"
+            
+        elif compliance_type == "03":  # Debit Note
+            print("enter in debit note",compliance_type)
+            cbc_InvoiceTypeCode.text = "03"
+
+        #PURCHASE INVOICE`
         elif compliance_type == "11":  # Self-billed Invoice
             cbc_InvoiceTypeCode.text = "11"
             
-        # elif compliance_type == "3":  # Debit Note
-        #     cbc_InvoiceTypeCode.text = "03"
-        # elif compliance_type == "4":  # Refund Note
+                # elif compliance_type == "4":  # Refund Note
         #     cbc_InvoiceTypeCode.text = "04"
         # elif compliance_type == "12":  # Self-billed Credit Note
         #     cbc_InvoiceTypeCode.text = "12"
