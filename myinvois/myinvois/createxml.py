@@ -40,6 +40,7 @@ def add_billing_reference(invoice,invoice_number,sales_invoice_doc):
         if sales_invoice_doc.custom_einvoice_type in [
             "Credit Note",
             "Debit Note",
+            "Refund Note",
         ]:
             invoice_id = sales_invoice_doc.return_against
 
@@ -53,6 +54,7 @@ def add_billing_reference(invoice,invoice_number,sales_invoice_doc):
         if sales_invoice_doc.custom_einvoice_type in [
             "Credit Note",
             "Debit Note",
+            "Refund Note",
            
         ]:
             doc_id = sales_invoice_doc.return_against
@@ -105,9 +107,14 @@ def salesinvoice_data(invoice,invoice_number):
         if not sales_invoice_doc.custom_einvoice_type:
             frappe.throw("Please select the E-invoice Type in the Purchase Invoice")
         
-        if sales_invoice_doc.is_return == 1:
+        if (sales_invoice_doc.is_return == 1 and sales_invoice_doc.custom_is_return_refund ==0):
             if sales_invoice_doc.custom_einvoice_type != "Credit Note":
                 frappe.throw("Please select the e-invoice type as Credit Note for return sales invoice")
+
+        if (sales_invoice_doc.is_return == 1 and sales_invoice_doc.custom_is_return_refund ==1):
+            if sales_invoice_doc.custom_einvoice_type != "Refund Note":
+                frappe.throw("Please select the e-invoice type as Refund Note for return sales invoice")
+
           
         if sales_invoice_doc.is_debit_note == 1:
             # Check if the field is already set to "03 : Debit Note"
@@ -374,8 +381,10 @@ def invoice_Typecode_Compliance(invoice,compliance_type):
             cbc_InvoiceTypeCode.text = "02"
             
         elif compliance_type == "03":  # Debit Note
-            print("enter in debit note",compliance_type)
             cbc_InvoiceTypeCode.text = "03"
+            
+        elif compliance_type == "04":  # Refund Note
+            cbc_InvoiceTypeCode.text = "04"
 
         #PURCHASE INVOICE`
         elif compliance_type == "11":  # Self-billed Invoice

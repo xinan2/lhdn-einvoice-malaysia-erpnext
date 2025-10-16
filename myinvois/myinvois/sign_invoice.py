@@ -238,14 +238,7 @@ def lhdn_Background(invoice_number):
         
         if not frappe.db.exists("Sales Invoice", invoice_number):
                 frappe.throw("Please save and submit the invoice before sending to Lhdn:  " + str(invoice_number))
-                
-
-        # if sales_invoice_doc.docstatus in [0,2]:
-        #     frappe.throw("Please submit the invoice before sending to Zatca:  " + str(invoice_number))
-            
-        # if sales_invoice_doc.custom_zatca_status == "REPORTED" or sales_invoice_doc.custom_zatca_status == "CLEARED":
-        #     frappe.throw("Already submitted to Zakat and Tax Authority")
-        
+                        
         
         #commenting out for now
         # compliance_type = sales_invoice_doc.custom_einvoice_code
