@@ -84,11 +84,42 @@ frappe.ui.form.on("Purchase Invoice",{
         
         });
         frm.reload_doc();
+    },
+    before_save(frm) {
+        // Case 1: Self-billed Refund Note (is_return=1 and custom_is_return_refund=1)
+        if (
+        frm.doc.is_return === 1 &&
+        frm.doc.custom_is_return_refund === 1 &&
+        frm.doc.custom_einvoice_type !== "Self-billed Refund Note"
+        ) {
+        frappe.msgprint({
+            title: __("Validation"),
+            indicator: "red",
+            message: __("As per LHDN Regulation, the invoice type code should be '14 : Self-billed Refund Note'")
+        });
+        frm.set_value("custom_einvoice_type", "Self-billed Refund Note");
         }
 
+        // Case 2: Self-billed Credit or Debit Note (is_return=1 and custom_is_return_refund=0)
+        if (
+        frm.doc.is_return === 1 &&
+        frm.doc.custom_is_return_refund === 0 &&
+        !["Self-billed Credit Note", "Self-billed Debit Note"].includes(frm.doc.custom_einvoice_type)
+        ) {
+        frappe.msgprint({
+            title: __("Validation"),
+            indicator: "red",
+            message: __("As per LHDN Regulation, choose the invoice type code as 'Self-billed Credit Note' or 'Self-billed Debit Note'")
+        });
+        // Optionally set a default
+        frm.set_value("custom_einvoice_type", "");
+        }
+    }
 
 
 });
+
+
 
 frappe.ui.form.on("Purchase Invoice Item", {
 

@@ -190,6 +190,9 @@ def refresh_doc_status(uuid,invoice_number):
         print("status code longid",status_data.get("longId"))
 
         sale_doc.db_set("custom_lhdn_status", doc_status)
+        if long_id:
+            sale_doc.db_set("custom_long_id", long_id)
+
 
         if doc_status == "Valid":
             

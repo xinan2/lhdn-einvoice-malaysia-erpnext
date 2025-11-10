@@ -459,7 +459,7 @@ def refresh_doc_status(uuid,invoice_number):
         print("enter in refersh")
         sale_doc = frappe.get_doc("Purchase Invoice", invoice_number)
         company_name = sale_doc.company
-        long_id = sale_doc.custom_long_id
+        # long_id = sale_doc.custom_long_id
 
         #calling token method
         token = get_access_token(company_name)
@@ -486,6 +486,10 @@ def refresh_doc_status(uuid,invoice_number):
         print("status code longid",status_data.get("longId"))
 
         sale_doc.db_set("custom_lhdn_status", doc_status)
+        # Save long ID if present
+        if long_id:
+            sale_doc.db_set("custom_long_id", long_id)
+
 
         if doc_status == "Valid":
             

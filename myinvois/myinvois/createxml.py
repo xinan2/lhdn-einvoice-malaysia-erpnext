@@ -390,14 +390,14 @@ def invoice_Typecode_Compliance(invoice,compliance_type):
         elif compliance_type == "11":  # Self-billed Invoice
             cbc_InvoiceTypeCode.text = "11"
             
-                # elif compliance_type == "4":  # Refund Note
+        # elif compliance_type == "4":  # Refund Note
         #     cbc_InvoiceTypeCode.text = "04"
-        # elif compliance_type == "12":  # Self-billed Credit Note
-        #     cbc_InvoiceTypeCode.text = "12"
-        # elif compliance_type == "13":  # Self-billed Debit Note
-        #     cbc_InvoiceTypeCode.text = "13"
-        # elif compliance_type == "14":  # Self-billed Refund Note
-        #     cbc_InvoiceTypeCode.text = "14"
+        elif compliance_type == "12":  # Self-billed Credit Note
+            cbc_InvoiceTypeCode.text = "12"
+        elif compliance_type == "13":  # Self-billed Debit Note
+            cbc_InvoiceTypeCode.text = "13"
+        elif compliance_type == "14":  # Self-billed Refund Note
+            cbc_InvoiceTypeCode.text = "14"
                 
         return invoice
                         

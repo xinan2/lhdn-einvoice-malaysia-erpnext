@@ -49,38 +49,45 @@ def add_billing_reference(invoice,invoice_number,purchase_invoice_doc):
         billing_reference = ET.SubElement(invoice, "cac:BillingReference")        
         invoice_document_reference = ET.SubElement(billing_reference, "cac:InvoiceDocumentReference")   
         
-        # if purchase_invoice_doc.custom_einvoice_type in [
-        #     "Credit Note"
-        # ]:
-        #     invoice_id = purchase_invoice_doc.return_against
+        if purchase_invoice_doc.custom_einvoice_type in [
+            "Self-billed Credit Note",
+            "Self-billed Debit Note",
+            "Self-billed Refund Note",
+        ]:
+            invoice_id = purchase_invoice_doc.return_against
+            print("invoice_id",invoice_id)
 
-        # else:
-        #     invoice_id = invoice_number
+        else:
+            invoice_id = invoice_number
+            print("invoice_id else",invoice_id)
 
-        invoice_id = invoice_number
+        # invoice_id = invoice_number
         cbc_ID = ET.SubElement(invoice_document_reference, "cbc:ID")   
         cbc_ID.text = str(invoice_id) 
 
         
-        # if purchase_invoice_doc.custom_einvoice_type in [
-        #     "Credit Note",
+        if purchase_invoice_doc.custom_einvoice_type in [
+            "Self-billed Credit Note",
+            "Self-billed Debit Note",
+            "Self-billed Refund Note",
            
-        # ]:
-        #     doc_id = purchase_invoice_doc.return_against
-        #     if not doc_id:
-        #         frappe.throw("No document found in return_against.")
+        ]:
+            doc_id = purchase_invoice_doc.return_against
+            print("doc_id",doc_id)
+            if not doc_id:
+                frappe.throw("No document found in return_against.")
 
 
-        #     doc = frappe.get_doc("Sales Invoice", doc_id)
+            doc = frappe.get_doc("Purchase Invoice", doc_id)
 
-        #     if hasattr(doc, "custom_uuid") and doc.custom_uuid:
-        #         print("enter in custom uuid block")                               
-        #         uuid = doc.custom_uuid
-        #         print("uuid",uuid)
-        #         cbc_ID = ET.SubElement(invoice_document_reference, "cbc:UUID")   
-        #         cbc_ID.text = str(uuid)                
-        #     else:
-        #         frappe.throw("No UUID documents no found in custom_uuid.")
+            if hasattr(doc, "custom_uuid") and doc.custom_uuid:
+                print("enter in custom uuid block")                               
+                uuid = doc.custom_uuid
+                print("uuid",uuid)
+                cbc_ID = ET.SubElement(invoice_document_reference, "cbc:UUID")   
+                cbc_ID.text = str(uuid)                
+            else:
+                frappe.throw("No UUID documents no found in custom_uuid.")
 
     except (
         frappe.DoesNotExistError,
@@ -108,7 +115,35 @@ def purchase_invoice_data(invoice,invoice_number):
         create_element(invoice, "cbc:IssueTime", issue_time)
         
         if not purchase_invoice_doc.custom_einvoice_type:
-            frappe.throw("Please select the e-invoice type in the sales invoice")
+            frappe.throw("Please select the e-invoice type in the purchase invoice")
+
+        if (
+            purchase_invoice_doc.custom_is_return_refund == 1
+            and purchase_invoice_doc.is_return == 1
+        ):
+            # Check if the field is already set to "03 : Debit Note"
+            if (
+                purchase_invoice_doc.custom_einvoice_type
+                != "Self-billed Refund Note"
+            ):
+                frappe.throw(
+                    "As per LHDN Regulation, the invoice type code as '14 : Self-billed Refund Note'"
+                )
+
+        if (
+            purchase_invoice_doc.is_return == 1
+            and purchase_invoice_doc.custom_is_return_refund == 0
+        ):
+            # Check if the field is already set to "02 : Credit Note"
+            if purchase_invoice_doc.custom_einvoice_type not in [
+                "Self-billed Credit Note",
+                "Self-billed Debit Note",
+            ]:
+                frappe.throw(
+                    "As per LHDN Regulation,Choose the invoice type code as Self-billed Credit Note or Self-billed Debit Note"
+                )
+        
+
 
         compliance_type = purchase_invoice_doc.custom_einvoice_code 
 
